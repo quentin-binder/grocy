@@ -1,0 +1,504 @@
+@import "tailwindcss";
+
+/* =============================================================================
+   COMPONENT CLASSES - Phase 2 Design System
+   ============================================================================= */
+
+/* ---------------------------------------------------------------------------
+   BUTTONS (Task 2.7)
+   --------------------------------------------------------------------------- */
+
+/* Base button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  transition: background-color 150ms, color 150ms;
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-primary-500);
+  box-shadow: 0 0 0 2px rgb(12 140 233 / 0.5);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Primary button - main action */
+.btn-primary {
+  background-color: var(--color-primary-500, #0c8ce9);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-600, #006fc7);
+}
+
+:is(.dark .btn-primary) {
+  background-color: var(--color-primary-600, #006fc7);
+}
+
+:is(.dark .btn-primary:hover:not(:disabled)) {
+  background-color: var(--color-primary-700, #0159a1);
+}
+
+/* Secondary button - alternative actions */
+.btn-secondary {
+  background-color: var(--color-gray-100, #f4f4f5);
+  color: var(--color-gray-700, #3f3f46);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-gray-200, #e4e4e7);
+}
+
+:is(.dark .btn-secondary) {
+  background-color: var(--color-gray-700, #3f3f46);
+  color: var(--color-gray-200, #e4e4e7);
+}
+
+:is(.dark .btn-secondary:hover:not(:disabled)) {
+  background-color: var(--color-gray-600, #52525b);
+}
+
+/* Ghost button - minimal styling */
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-gray-700, #3f3f46);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background-color: var(--color-gray-100, #f4f4f5);
+}
+
+:is(.dark .btn-ghost) {
+  color: var(--color-gray-300, #d4d4d8);
+}
+
+:is(.dark .btn-ghost:hover:not(:disabled)) {
+  background-color: var(--color-gray-700, #3f3f46);
+}
+
+/* Danger button - destructive actions */
+.btn-danger {
+  background-color: var(--color-danger, #ef4444);
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: var(--color-danger-dark, #991b1b);
+}
+
+:is(.dark .btn-danger:hover:not(:disabled)) {
+  background-color: #dc2626;
+}
+
+/* Success button */
+.btn-success {
+  background-color: var(--color-success, #10b981);
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background-color: var(--color-success-dark, #065f46);
+}
+
+:is(.dark .btn-success:hover:not(:disabled)) {
+  background-color: #059669;
+}
+
+/* Warning button */
+.btn-warning {
+  background-color: var(--color-warning, #f59e0b);
+  color: white;
+}
+
+.btn-warning:hover:not(:disabled) {
+  background-color: var(--color-warning-dark, #92400e);
+}
+
+:is(.dark .btn-warning:hover:not(:disabled)) {
+  background-color: #d97706;
+}
+
+/* Button sizes */
+.btn-sm {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
+}
+
+.btn-lg {
+  font-size: 1.125rem;
+  padding: 0.75rem 1.5rem;
+}
+
+/* Icon-only button */
+.btn-icon {
+  padding: 0.5rem;
+}
+
+/* ---------------------------------------------------------------------------
+   FORM INPUTS (Task 2.8)
+   --------------------------------------------------------------------------- */
+
+/* Text input */
+.input {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--color-gray-300, #d4d4d8);
+  border-radius: 0.375rem;
+  background-color: white;
+}
+
+.input::placeholder {
+  color: var(--color-gray-400, #a1a1aa);
+}
+
+.input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgb(12 140 233 / 0.3);
+  border-color: var(--color-primary-500, #0c8ce9);
+}
+
+.input:disabled {
+  background-color: var(--color-gray-100, #f4f4f5);
+  cursor: not-allowed;
+}
+
+:is(.dark .input) {
+  background-color: var(--color-gray-800, #27272a);
+  border-color: var(--color-gray-600, #52525b);
+  color: var(--color-gray-100, #f4f4f5);
+}
+
+:is(.dark .input::placeholder) {
+  color: var(--color-gray-500, #71717a);
+}
+
+:is(.dark .input:focus) {
+  box-shadow: 0 0 0 2px rgb(12 140 233 / 0.4);
+  border-color: var(--color-primary-400, #36aaf8);
+}
+
+/* Input with error state */
+.input-error {
+  border-color: var(--color-danger, #ef4444);
+}
+
+.input-error:focus {
+  box-shadow: 0 0 0 2px rgb(239 68 68 / 0.3);
+  border-color: var(--color-danger, #ef4444);
+}
+
+/* Select dropdown */
+.select {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--color-gray-300, #d4d4d8);
+  border-radius: 0.375rem;
+  background-color: white;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.5em 1.5em;
+  appearance: none;
+}
+
+.select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgb(12 140 233 / 0.3);
+  border-color: var(--color-primary-500, #0c8ce9);
+}
+
+:is(.dark .select) {
+  background-color: var(--color-gray-800, #27272a);
+  border-color: var(--color-gray-600, #52525b);
+  color: var(--color-gray-100, #f4f4f5);
+}
+
+/* Textarea */
+.textarea {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--color-gray-300, #d4d4d8);
+  border-radius: 0.375rem;
+  background-color: white;
+  resize: vertical;
+  min-height: 5rem;
+}
+
+.textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgb(12 140 233 / 0.3);
+  border-color: var(--color-primary-500, #0c8ce9);
+}
+
+:is(.dark .textarea) {
+  background-color: var(--color-gray-800, #27272a);
+  border-color: var(--color-gray-600, #52525b);
+  color: var(--color-gray-100, #f4f4f5);
+}
+
+/* Checkbox */
+.checkbox {
+  height: 1rem;
+  width: 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--color-gray-300, #d4d4d8);
+  accent-color: var(--color-primary-500, #0c8ce9);
+}
+
+:is(.dark .checkbox) {
+  border-color: var(--color-gray-600, #52525b);
+  background-color: var(--color-gray-800, #27272a);
+}
+
+/* Radio button */
+.radio {
+  height: 1rem;
+  width: 1rem;
+  border: 1px solid var(--color-gray-300, #d4d4d8);
+  accent-color: var(--color-primary-500, #0c8ce9);
+}
+
+:is(.dark .radio) {
+  border-color: var(--color-gray-600, #52525b);
+  background-color: var(--color-gray-800, #27272a);
+}
+
+/* Form group container */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group > * + * {
+  margin-top: 0.25rem;
+}
+
+/* Form label */
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-gray-700, #3f3f46);
+}
+
+:is(.dark .form-label) {
+  color: var(--color-gray-300, #d4d4d8);
+}
+
+/* Form help text */
+.form-help {
+  font-size: 0.75rem;
+  color: var(--color-gray-500, #71717a);
+}
+
+:is(.dark .form-help) {
+  color: var(--color-gray-400, #a1a1aa);
+}
+
+/* Form error text */
+.form-error {
+  font-size: 0.75rem;
+  color: var(--color-danger, #ef4444);
+}
+
+:is(.dark .form-error) {
+  color: #f87171;
+}
+
+/* Input group (for prepend/append) */
+.input-group {
+  display: flex;
+}
+
+.input-group .input {
+  border-radius: 0;
+}
+
+.input-group .input:first-child {
+  border-top-left-radius: 0.375rem;
+  border-bottom-left-radius: 0.375rem;
+}
+
+.input-group .input:last-child {
+  border-top-right-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+}
+
+.input-group-text {
+  display: flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-gray-500, #71717a);
+  background-color: var(--color-gray-100, #f4f4f5);
+  border: 1px solid var(--color-gray-300, #d4d4d8);
+}
+
+:is(.dark .input-group-text) {
+  background-color: var(--color-gray-700, #3f3f46);
+  border-color: var(--color-gray-600, #52525b);
+  color: var(--color-gray-400, #a1a1aa);
+}
+
+/* ---------------------------------------------------------------------------
+   CARDS (Task 2.9)
+   --------------------------------------------------------------------------- */
+
+/* Card container */
+.card {
+  background-color: white;
+  border: 1px solid var(--color-gray-200, #e4e4e7);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+}
+
+:is(.dark .card) {
+  background-color: var(--color-gray-800, #27272a);
+  border-color: var(--color-gray-700, #3f3f46);
+}
+
+/* Card header */
+.card-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-gray-200, #e4e4e7);
+  background-color: var(--color-gray-50, #fafafa);
+}
+
+:is(.dark .card-header) {
+  background-color: rgb(63 63 70 / 0.5);
+  border-color: var(--color-gray-700, #3f3f46);
+}
+
+/* Card body */
+.card-body {
+  padding: 1rem;
+}
+
+/* Card footer */
+.card-footer {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--color-gray-200, #e4e4e7);
+  background-color: var(--color-gray-50, #fafafa);
+}
+
+:is(.dark .card-footer) {
+  background-color: rgb(63 63 70 / 0.5);
+  border-color: var(--color-gray-700, #3f3f46);
+}
+
+/* Card title */
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-gray-900, #18181b);
+}
+
+:is(.dark .card-title) {
+  color: var(--color-gray-100, #f4f4f5);
+}
+
+/* Card subtitle */
+.card-subtitle {
+  font-size: 0.875rem;
+  color: var(--color-gray-500, #71717a);
+}
+
+:is(.dark .card-subtitle) {
+  color: var(--color-gray-400, #a1a1aa);
+}
+
+/* ---------------------------------------------------------------------------
+   BADGES (Task 2.10)
+   --------------------------------------------------------------------------- */
+
+/* Base badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+}
+
+/* Success badge - green */
+.badge-success {
+  background-color: var(--color-success-light, #ecfdf5);
+  color: var(--color-success-dark, #065f46);
+}
+
+:is(.dark .badge-success) {
+  background-color: rgb(16 185 129 / 0.2);
+  color: #6ee7b7;
+}
+
+/* Warning badge - amber */
+.badge-warning {
+  background-color: var(--color-warning-light, #fffbeb);
+  color: var(--color-warning-dark, #92400e);
+}
+
+:is(.dark .badge-warning) {
+  background-color: rgb(245 158 11 / 0.2);
+  color: #fcd34d;
+}
+
+/* Danger badge - red */
+.badge-danger {
+  background-color: var(--color-danger-light, #fef2f2);
+  color: var(--color-danger-dark, #991b1b);
+}
+
+:is(.dark .badge-danger) {
+  background-color: rgb(239 68 68 / 0.2);
+  color: #fca5a5;
+}
+
+/* Info badge - blue */
+.badge-info {
+  background-color: var(--color-info-light, #eff6ff);
+  color: var(--color-info-dark, #1e40af);
+}
+
+:is(.dark .badge-info) {
+  background-color: rgb(59 130 246 / 0.2);
+  color: #93c5fd;
+}
+
+/* Neutral badge - gray */
+.badge-neutral {
+  background-color: var(--color-gray-100, #f4f4f5);
+  color: var(--color-gray-700, #3f3f46);
+}
+
+:is(.dark .badge-neutral) {
+  background-color: var(--color-gray-700, #3f3f46);
+  color: var(--color-gray-300, #d4d4d8);
+}
+
+/* Primary badge */
+.badge-primary {
+  background-color: var(--color-primary-100, #e0effe);
+  color: var(--color-primary-700, #0159a1);
+}
+
+:is(.dark .badge-primary) {
+  background-color: rgb(11 63 110 / 0.5);
+  color: #7cc8fd;
+}

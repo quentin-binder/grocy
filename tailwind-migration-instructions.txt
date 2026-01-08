@@ -1,0 +1,640 @@
+# Grocy UI Migration Instructions
+# Bootstrap 4.5 -> Tailwind CSS with Vite
+# Target: Minimal, clean admin interface (Linear/Notion style)
+
+================================================================================
+OVERVIEW
+================================================================================
+
+This document provides step-by-step instructions for migrating Grocy's UI from
+Bootstrap 4.5 to Tailwind CSS with Vite build system.
+
+Current State:
+- CSS Framework: Bootstrap 4.5.2
+- Templates: Laravel Blade (~96 pages + 18 components)
+- Main Layout: /views/layout/default.blade.php (34KB)
+- Custom CSS: grocy.css, grocy_menu_layout.css, grocy_night_mode.css
+- Build System: None - assets served directly
+- Navigation: Sidebar-based with collapsible menus
+
+Target State:
+- CSS Framework: Tailwind CSS with custom design tokens
+- Interactivity: Alpine.js (replacing Bootstrap JS)
+- Build System: Vite with hot reload
+- Dark Mode: Class-based (Tailwind native)
+- Design: Minimal, clean admin interface
+
+================================================================================
+HOW TO USE THIS FILE
+================================================================================
+
+1. Open the companion file: tailwind-migration-todo.md
+2. Work through each task in order
+3. Mark tasks complete ONLY when fully verified
+4. Add new tasks that arise during implementation
+5. Never skip ahead - each phase builds on the previous
+
+================================================================================
+PHASE 1: BUILD SYSTEM SETUP
+================================================================================
+
+GOAL: Set up Vite + Tailwind + Alpine.js build pipeline
+
+STEP 1.1 - Install Development Dependencies
+--------------------------------------------
+Run in project root:
+```bash
+npm install -D vite tailwindcss postcss autoprefixer @tailwindcss/forms @tailwindcss/typography
+```
+
+STEP 1.2 - Install Runtime Dependencies
+---------------------------------------
+```bash
+npm install alpinejs @alpinejs/collapse tippy.js flatpickr focus-trap
+```
+
+STEP 1.3 - Create vite.config.js
+--------------------------------
+Create /vite.config.js with:
+- root: current directory
+- base: '/build/'
+- build.outDir: 'public/build'
+- build.manifest: true
+- Input entries for JS and CSS
+- Dev server with CORS enabled
+
+STEP 1.4 - Create tailwind.config.js
+------------------------------------
+Create /tailwind.config.js with:
+- content: ['./views/**/*.blade.php', './resources/**/*.js']
+- darkMode: 'class'
+- Theme extensions (colors, fonts, spacing)
+- Plugins: @tailwindcss/forms, @tailwindcss/typography
+
+STEP 1.5 - Create postcss.config.js
+-----------------------------------
+Create /postcss.config.js with:
+- tailwindcss plugin
+- autoprefixer plugin
+
+STEP 1.6 - Create Resource Directory Structure
+----------------------------------------------
+Create directories:
+- /resources/css/
+- /resources/css/vendors/
+- /resources/js/
+- /resources/js/components/
+
+STEP 1.7 - Create Main CSS Entry Point
+--------------------------------------
+Create /resources/css/app.css with:
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom component classes will go here */
+```
+
+STEP 1.8 - Create Main JS Entry Point
+-------------------------------------
+Create /resources/js/app.js with:
+- Alpine.js import and initialization
+- Collapse plugin registration
+- Component imports
+
+STEP 1.9 - Create PHP Vite Helper
+---------------------------------
+Create /helpers/ViteHelper.php with:
+- Function vite_assets($entry) that:
+  - In dev mode: returns Vite dev server script tags
+  - In production: reads manifest.json and returns built asset paths
+
+STEP 1.10 - Add npm Scripts
+---------------------------
+Update package.json to add:
+```json
+"scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "preview": "vite preview"
+}
+```
+
+STEP 1.11 - Add Feature Flag
+----------------------------
+Add to /config-dist.php:
+```php
+Setting('GROCY_USE_TAILWIND', false);
+```
+
+STEP 1.12 - Update .gitignore
+-----------------------------
+Add to .gitignore:
+```
+/public/build/
+/node_modules/
+```
+
+VERIFICATION for Phase 1:
+- npm run dev starts Vite server on localhost:5173
+- npm run build creates public/build/ with manifest.json
+- No errors in console
+
+================================================================================
+PHASE 2: DESIGN SYSTEM
+================================================================================
+
+GOAL: Define design tokens and reusable component styles
+
+STEP 2.1 - Define Color Palette
+-------------------------------
+In tailwind.config.js theme.extend.colors:
+
+Primary (soft blue):
+  50: '#f0f7ff', 100: '#e0effe', 200: '#b9e0fe', 300: '#7cc8fd',
+  400: '#36aaf8', 500: '#0c8ce9', 600: '#006fc7', 700: '#0159a1',
+  800: '#064b85', 900: '#0b3f6e'
+
+Gray (zinc-based):
+  50: '#fafafa', 100: '#f4f4f5', 200: '#e4e4e7', 300: '#d4d4d8',
+  400: '#a1a1aa', 500: '#71717a', 600: '#52525b', 700: '#3f3f46',
+  800: '#27272a', 900: '#18181b', 950: '#09090b'
+
+Semantic colors:
+  success: { light: '#ecfdf5', DEFAULT: '#10b981', dark: '#065f46' }
+  warning: { light: '#fffbeb', DEFAULT: '#f59e0b', dark: '#92400e' }
+  danger:  { light: '#fef2f2', DEFAULT: '#ef4444', dark: '#991b1b' }
+  info:    { light: '#eff6ff', DEFAULT: '#3b82f6', dark: '#1e40af' }
+
+STEP 2.2 - Define Typography
+----------------------------
+In tailwind.config.js theme.extend:
+- fontFamily.sans: ['Inter', 'system-ui', 'sans-serif']
+- fontSize.base: ['0.875rem', { lineHeight: '1.5rem' }]
+
+STEP 2.3 - Define Spacing and Borders
+-------------------------------------
+In tailwind.config.js theme.extend:
+- borderRadius.DEFAULT: '0.375rem'
+- boxShadow.card: '0 1px 3px 0 rgb(0 0 0 / 0.05)'
+- boxShadow.dropdown: '0 4px 6px -1px rgb(0 0 0 / 0.07)'
+
+STEP 2.4 - Create Component Classes
+-----------------------------------
+In /resources/css/app.css add @layer components:
+
+Button styles:
+- .btn-primary: bg-primary-500, text-white, hover states
+- .btn-secondary: bg-gray-100, text-gray-700
+- .btn-ghost: transparent bg, hover bg-gray-100
+- .btn-danger: bg-danger, text-white
+
+Form styles:
+- .input: border, rounded, focus ring, dark mode variants
+- .select: styled select with dropdown arrow
+- .checkbox, .radio: custom styled checkboxes
+
+Card styles:
+- .card: white bg, border, rounded-lg, padding
+- .card-header, .card-body
+
+Badge styles:
+- .badge-success, .badge-warning, .badge-danger, .badge-info
+
+VERIFICATION for Phase 2:
+- Tailwind config includes all design tokens
+- CSS file has component classes
+- Build completes without errors
+
+================================================================================
+PHASE 3: LAYOUT & NAVIGATION
+================================================================================
+
+GOAL: Create new main layout template with Tailwind
+
+STEP 3.1 - Create Layout Template
+---------------------------------
+Create /views/layout/default-tailwind.blade.php
+
+Structure:
+```html
+<html class="{{ $nightMode ? 'dark' : '' }}">
+<head>
+  <!-- Meta, title, Vite assets -->
+</head>
+<body x-data="{ sidebarOpen: true, sidebarMobile: false }">
+  <!-- Mobile overlay -->
+  <!-- Sidebar -->
+  <!-- Main content wrapper -->
+    <!-- Header -->
+    <!-- Page content: @yield('content') -->
+  <!-- Toast container -->
+  <!-- Modal container -->
+</body>
+</html>
+```
+
+STEP 3.2 - Implement Sidebar
+----------------------------
+Sidebar features:
+- Width: 256px expanded, 64px collapsed (lg screens)
+- Logo at top (full logo expanded, icon collapsed)
+- Scrollable navigation area
+- Collapse toggle button
+- Mobile: slide-in overlay
+
+Navigation items from current layout (lines 161-457):
+- Stock section (overview, purchase, consume, transfer, inventory)
+- Shopping list
+- Recipes, Meal plan
+- Chores, Tasks, Batteries
+- Equipment, Calendar
+- Master data (collapsible submenu)
+- User-specific entities
+
+Port all feature flag checks: GROCY_FEATURE_FLAG_*
+Port permission visibility classes
+
+STEP 3.3 - Implement Header
+---------------------------
+Header features:
+- Mobile menu button (hamburger)
+- Page title from @yield('title')
+- Clock display (port existing)
+- Right-side actions dropdown
+- User menu dropdown
+
+STEP 3.4 - Create Sidebar Nav Partial
+-------------------------------------
+Create /views/layout/partials/sidebar-nav.blade.php
+Extract navigation logic for cleaner template
+
+STEP 3.5 - Create Header Actions Partial
+----------------------------------------
+Create /views/layout/partials/header-actions.blade.php
+Include: dark mode toggle, auto-reload, user dropdown
+
+STEP 3.6 - Update Main Layout with Conditional
+----------------------------------------------
+Modify /views/layout/default.blade.php:
+At the very top, add logic to include Tailwind layout if enabled:
+```blade
+@if(defined('GROCY_USE_TAILWIND') && GROCY_USE_TAILWIND)
+  @include('layout.default-tailwind')
+  @php return; @endphp
+@endif
+```
+
+STEP 3.7 - Port Global JS Variables
+-----------------------------------
+In default-tailwind.blade.php head, include same Grocy object setup:
+- Grocy.Mode, Grocy.BaseUrl, Grocy.View
+- Grocy.UserSettings, Grocy.FeatureFlags
+- Localization strings
+
+VERIFICATION for Phase 3:
+- Enable GROCY_USE_TAILWIND in config
+- Application loads with new layout
+- Sidebar expands/collapses
+- Mobile menu works
+- All navigation links functional
+- Dark mode toggles correctly
+- Clock displays
+
+================================================================================
+PHASE 4: ALPINE.JS COMPONENTS
+================================================================================
+
+GOAL: Replace Bootstrap JS with Alpine.js components
+
+STEP 4.1 - Modal Component
+--------------------------
+Create /resources/js/components/modal.js
+
+Features:
+- x-data="modal" Alpine component
+- Focus trapping when open
+- ESC to close
+- Click outside to close
+- Transitions for open/close
+
+Also create window.GrocyModal compatibility layer:
+- GrocyModal.alert(options)
+- GrocyModal.confirm(options)
+- GrocyModal.dialog(options)
+
+STEP 4.2 - Dropdown Component
+-----------------------------
+Create /resources/js/components/dropdown.js
+
+Features:
+- x-data="dropdown" Alpine component
+- Click toggle
+- Click outside to close
+- Keyboard navigation (optional)
+
+STEP 4.3 - Tooltip Integration
+------------------------------
+Create /resources/js/components/tooltip.js
+
+Features:
+- Initialize Tippy.js on [data-tooltip] elements
+- Support placement options
+- Dark mode theming
+
+STEP 4.4 - Toast Notifications
+------------------------------
+Create /resources/js/components/toast.js
+
+Features:
+- Alpine store: $store.toasts
+- Methods: success, error, warning, info
+- Auto-dismiss after duration
+- Manual close button
+
+Compatibility layer:
+- window.toastr.success/error/warning/info
+
+STEP 4.5 - Collapse Component
+-----------------------------
+Register @alpinejs/collapse plugin
+Use x-collapse for animated expand/collapse
+
+STEP 4.6 - Update app.js
+------------------------
+Import and register all components
+Initialize Alpine with plugins
+
+VERIFICATION for Phase 4:
+- Modals open/close with transitions
+- Dropdowns work correctly
+- Tooltips appear on hover
+- Toasts show and auto-dismiss
+- Collapsible sections animate
+
+================================================================================
+PHASE 5: THIRD-PARTY LIBRARY STYLING
+================================================================================
+
+GOAL: Style third-party libraries with Tailwind
+
+STEP 5.1 - DataTables Styling
+-----------------------------
+Create /resources/css/vendors/datatables.css
+
+Style:
+- Table headers (gray bg, uppercase, small text)
+- Table rows (hover state, borders)
+- Pagination (button styles)
+- Search input
+- Length selector
+- Info text
+- Dark mode variants
+
+STEP 5.2 - Flatpickr Styling (DateTime Picker)
+----------------------------------------------
+Create /resources/css/vendors/flatpickr.css
+
+Replace Tempus Dominus with Flatpickr:
+- Calendar popup styling
+- Day cells (hover, selected, today)
+- Month/year navigation
+- Time picker styling
+- Dark mode variants
+
+STEP 5.3 - FullCalendar Styling
+-------------------------------
+Create /resources/css/vendors/fullcalendar.css
+
+Style:
+- Toolbar buttons
+- View buttons
+- Event styling
+- Day cells
+- Dark mode variants
+
+STEP 5.4 - Summernote Styling
+-----------------------------
+Create /resources/css/vendors/summernote.css
+
+Style:
+- Toolbar
+- Editor area
+- Buttons
+- Dark mode variants
+
+STEP 5.5 - Import Vendor Styles
+-------------------------------
+In /resources/css/app.css, import all vendor CSS:
+```css
+@import './vendors/datatables.css';
+@import './vendors/flatpickr.css';
+@import './vendors/fullcalendar.css';
+@import './vendors/summernote.css';
+```
+
+VERIFICATION for Phase 5:
+- DataTables renders with Tailwind styling
+- Date picker matches design system
+- Calendar matches design system
+- WYSIWYG editor matches design system
+- All work in dark mode
+
+================================================================================
+PHASE 6: PAGE MIGRATION
+================================================================================
+
+GOAL: Migrate all pages from Bootstrap to Tailwind
+
+PRIORITY 1 - Core Pages
+-----------------------
+6.1 - stockoverview.blade.php
+6.2 - purchase.blade.php
+6.3 - consume.blade.php
+6.4 - shoppinglist.blade.php
+6.5 - transfer.blade.php
+6.6 - inventory.blade.php
+
+PRIORITY 2 - Components
+-----------------------
+6.7 - components/productpicker.blade.php
+6.8 - components/datetimepicker.blade.php (update to use Flatpickr)
+6.9 - components/numberpicker.blade.php
+6.10 - components/productcard.blade.php
+6.11 - components/locationpicker.blade.php
+6.12 - components/userpicker.blade.php
+6.13 - components/recipepicker.blade.php
+6.14 - components/shoppinglocationpicker.blade.php
+6.15 - components/userfieldsform.blade.php
+
+PRIORITY 3 - Secondary Pages
+----------------------------
+6.16 - recipes.blade.php
+6.17 - recipeform.blade.php
+6.18 - mealplan.blade.php
+6.19 - products.blade.php
+6.20 - productform.blade.php
+6.21 - choresoverview.blade.php
+6.22 - choretracking.blade.php
+6.23 - tasksoverview.blade.php / tasks.blade.php
+6.24 - batteriesoverview.blade.php
+6.25 - batterytracking.blade.php
+6.26 - equipment.blade.php
+6.27 - calendar.blade.php
+
+PRIORITY 4 - Master Data Pages
+------------------------------
+6.28 - locations.blade.php + locationform.blade.php
+6.29 - quantityunits.blade.php + quantityunitform.blade.php
+6.30 - productgroups.blade.php + productgroupform.blade.php
+6.31 - stores/shoppinglocations.blade.php + form
+6.32 - chores.blade.php + choreform.blade.php
+6.33 - batteries.blade.php + batteryform.blade.php
+
+PRIORITY 5 - Journal/History Pages
+----------------------------------
+6.34 - stockjournal.blade.php
+6.35 - stockentries.blade.php
+6.36 - choresjournal.blade.php
+6.37 - batteriesjournal.blade.php
+6.38 - stockreports/*.blade.php
+
+PRIORITY 6 - Settings & Admin
+-----------------------------
+6.39 - stocksettings.blade.php
+6.40 - recipessettings.blade.php
+6.41 - choressettings.blade.php
+6.42 - batteriessettings.blade.php
+6.43 - usersettings.blade.php
+6.44 - users.blade.php + userform.blade.php
+6.45 - manageapikeys.blade.php
+6.46 - about.blade.php
+
+PRIORITY 7 - Auth & Error Pages
+-------------------------------
+6.47 - login.blade.php
+6.48 - errors/403.blade.php
+6.49 - errors/404.blade.php
+6.50 - errors/500.blade.php
+
+PAGE MIGRATION PROCESS for each page:
+1. Read original template
+2. Identify Bootstrap classes used
+3. Map to Tailwind equivalents
+4. Update component includes
+5. Test all functionality
+6. Test dark mode
+7. Test responsive breakpoints
+8. Commit changes
+
+VERIFICATION for Phase 6:
+- Each page renders correctly
+- No Bootstrap classes remaining
+- All interactions work
+- Dark mode works
+- Mobile responsive
+
+================================================================================
+PHASE 7: CLEANUP & OPTIMIZATION
+================================================================================
+
+STEP 7.1 - Remove Bootstrap Dependencies
+-----------------------------------------
+Once all pages migrated and verified:
+- Remove Bootstrap CSS include from layout
+- Remove Bootstrap JS include
+- Update package.json to remove bootstrap
+- Remove bootbox (if fully replaced)
+
+STEP 7.2 - Clean Up Old CSS Files
+---------------------------------
+- Archive /public/css/grocy.css
+- Archive /public/css/grocy_menu_layout.css
+- Archive /public/css/grocy_night_mode.css
+
+STEP 7.3 - Optimize Tailwind Build
+----------------------------------
+- Verify PurgeCSS is removing unused classes
+- Check final CSS bundle size (target: < 50KB)
+- Enable CSS minification
+
+STEP 7.4 - Remove Feature Flag
+------------------------------
+- Set GROCY_USE_TAILWIND default to true
+- Eventually remove conditional logic in layout
+- Remove old default.blade.php Bootstrap content
+
+STEP 7.5 - Documentation
+------------------------
+- Update any developer documentation
+- Note new build commands in README if applicable
+
+FINAL VERIFICATION:
+- Full application test in browser
+- All CRUD operations work
+- All features functional
+- Mobile responsive at all breakpoints
+- Dark mode works throughout
+- Performance acceptable
+- No console errors
+
+================================================================================
+BOOTSTRAP TO TAILWIND CLASS REFERENCE
+================================================================================
+
+Common mappings:
+
+Layout:
+  row                   -> flex flex-wrap
+  col-12                -> w-full
+  col-md-6              -> md:w-1/2
+  container             -> container mx-auto px-4
+  d-none                -> hidden
+  d-md-block            -> md:block
+  d-flex                -> flex
+  justify-content-*     -> justify-*
+  align-items-*         -> items-*
+
+Spacing:
+  m-0                   -> m-0
+  p-3                   -> p-3 (similar scale)
+  mt-2                  -> mt-2
+  mb-4                  -> mb-4
+
+Typography:
+  text-muted            -> text-gray-500
+  font-weight-bold      -> font-bold
+  text-center           -> text-center
+  h1-h6                 -> text-4xl to text-base + font-bold
+
+Buttons:
+  btn btn-primary       -> btn-primary (custom class)
+  btn btn-outline-*     -> btn-secondary or btn-ghost
+  btn btn-sm            -> text-sm px-3 py-1.5
+  btn btn-lg            -> text-lg px-6 py-3
+
+Forms:
+  form-control          -> input (custom class)
+  form-group            -> space-y-1 or mb-4
+  form-check            -> flex items-center gap-2
+
+Cards:
+  card                  -> card (custom class)
+  card-header           -> card-header (custom class)
+  card-body             -> card-body or p-4
+
+Tables:
+  table                 -> w-full
+  table-striped         -> (via DataTables CSS)
+  table-hover           -> (via DataTables CSS)
+
+Utilities:
+  bg-*                  -> bg-* (may need color mapping)
+  border                -> border
+  rounded               -> rounded
+  shadow                -> shadow-card
+
+================================================================================
+END OF INSTRUCTIONS
+================================================================================

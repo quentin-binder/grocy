@@ -3,3 +3,6 @@ embedded.txt
 /.release
 /packages
 /public/packages
+/public/build
+/node_modules
+.idea
