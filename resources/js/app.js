@@ -9,6 +9,7 @@ import modal from './components/modal.js';
 import dropdown from './components/dropdown.js';
 import tooltip from './components/tooltip.js';
 import toastStore, { registerToastStore } from './components/toast.js';
+import { initAllPickers, setupTempusDominusCompat } from './components/flatpickr.js';
 
 // Register Alpine.js plugins
 Alpine.plugin(collapse);
@@ -30,3 +31,6 @@ window.Alpine = Alpine;
 document.addEventListener('alpine:init', () => {
 	// Tooltip initialization is handled in tooltip.js
 });
+
+// Setup Tempus Dominus compatibility layer for existing code
+setupTempusDominusCompat();

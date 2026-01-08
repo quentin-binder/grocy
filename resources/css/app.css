@@ -1,6 +1,15 @@
 @import "tailwindcss";
 
 /* =============================================================================
+   VENDOR CSS IMPORTS - Phase 5 Third-Party Library Styling
+   ============================================================================= */
+
+@import './vendors/datatables.css';
+@import './vendors/flatpickr.css';
+@import './vendors/fullcalendar.css';
+@import './vendors/summernote.css';
+
+/* =============================================================================
    COMPONENT CLASSES - Phase 2 Design System
    ============================================================================= */
 
