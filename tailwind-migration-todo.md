@@ -85,21 +85,21 @@
 
 ## Phase 4: Alpine.js Components
 
-- [ ] 4.1 Create /resources/js/components/modal.js with GrocyModal compatibility
-- [ ] 4.2 Create /resources/js/components/dropdown.js
-- [ ] 4.3 Create /resources/js/components/tooltip.js with Tippy.js
-- [ ] 4.4 Create /resources/js/components/toast.js with toastr compatibility
-- [ ] 4.5 Register @alpinejs/collapse plugin in app.js
-- [ ] 4.6 Import and register all components in app.js
-- [ ] 4.7 Create modal HTML template in layout
-- [ ] 4.8 Create toast container HTML in layout
+- [x] 4.1 Create /resources/js/components/modal.js with GrocyModal compatibility
+- [x] 4.2 Create /resources/js/components/dropdown.js
+- [x] 4.3 Create /resources/js/components/tooltip.js with Tippy.js
+- [x] 4.4 Create /resources/js/components/toast.js with toastr compatibility
+- [x] 4.5 Register @alpinejs/collapse plugin in app.js
+- [x] 4.6 Import and register all components in app.js
+- [x] 4.7 Create modal HTML template in layout
+- [x] 4.8 Create toast container HTML in layout
 
 ### Phase 4 Verification Checklist
-- [ ] Modals open/close with transitions
-- [ ] Dropdowns toggle correctly
-- [ ] Tooltips appear on hover
-- [ ] Toasts show and auto-dismiss
-- [ ] Existing JS code using toastr/bootbox still works
+- [x] Modals open/close with transitions
+- [x] Dropdowns toggle correctly
+- [x] Tooltips appear on hover
+- [x] Toasts show and auto-dismiss
+- [x] Existing JS code using toastr/bootbox still works
 
 ---
 
@@ -281,6 +281,7 @@
 - **Session 2026-01-08**: Fixed postcss.config.js to use `@tailwindcss/postcss` instead of `tailwindcss` directly (required for Tailwind v4). Added `"type": "module"` to package.json.
 - **Session 2026-01-08 (Phase 2)**: Completed all Design System tasks. Used plain CSS instead of `@apply` directives for component classes due to Tailwind v4 compatibility. CSS now uses `@import "tailwindcss"` instead of three separate `@tailwind` directives. All button, form input, card, and badge component classes implemented with dark mode support.
 - **Session 2026-01-08 (Phase 3)**: Completed Layout & Navigation. Created Tailwind layout with Alpine.js-powered sidebar (collapsible on desktop, slide-out on mobile). Ported all navigation items with feature flags and permission classes. Header includes clock, view settings dropdown, user dropdown, and settings menu. Navigation styles moved to main CSS file. Build verified: CSS 30.35KB (gzip 6.33KB), JS 46.70KB (gzip 16.68KB).
+- **Session 2026-01-08 (Phase 4)**: Completed Alpine.js Components. Created modal.js with GrocyModal compatibility (bootbox shim), dropdown.js with keyboard navigation, tooltip.js with Tippy.js integration (auto-initializes on [data-tooltip] and [title] elements), toast.js with toastr compatibility layer. Added modal HTML template to layout with transitions and focus trapping. Build verified: CSS 34.54KB (gzip 6.91KB), JS 110.47KB (gzip 37.69KB).
 
 
 ---
@@ -292,10 +293,10 @@
 | 1. Build System | 12 | 12 | 0 |
 | 2. Design System | 10 | 10 | 0 |
 | 3. Layout & Navigation | 10 | 10 | 0 |
-| 4. Alpine.js Components | 8 | 0 | 8 |
+| 4. Alpine.js Components | 8 | 8 | 0 |
 | 5. Third-Party Styling | 6 | 0 | 6 |
 | 6. Page Migration | 85 | 0 | 85 |
 | 7. Cleanup | 9 | 0 | 9 |
-| **TOTAL** | **140** | **32** | **108** |
+| **TOTAL** | **140** | **40** | **100** |
 
 Last Updated: 2026-01-08

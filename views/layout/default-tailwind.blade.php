@@ -180,11 +180,76 @@ use Grocy\Helpers\ViteHelper;
 	</div>
 	@endif
 
-	{{-- Toast container --}}
-	<div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
+	{{-- Toast container (Alpine.js based) --}}
+	<div id="toast-area"
+		class="fixed bottom-4 right-4 z-50 flex flex-col-reverse gap-2 pointer-events-none"
+		aria-live="assertive">
+		{{-- Toasts are rendered here by toastr.js (using existing toastr library for now) --}}
+	</div>
 
-	{{-- Modal container --}}
-	<div id="modal-container"></div>
+	{{-- Modal component (Alpine.js based) --}}
+	<div x-data="modal()"
+		x-show="isOpen"
+		x-cloak
+		@grocy-modal:show.window="open($event.detail)"
+		@grocy-modal:hide.window="close()"
+		class="fixed inset-0 z-50 overflow-y-auto"
+		aria-labelledby="modal-title"
+		role="dialog"
+		aria-modal="true">
+		{{-- Backdrop --}}
+		<div x-show="isOpen"
+			x-transition:enter="ease-out duration-300"
+			x-transition:enter-start="opacity-0"
+			x-transition:enter-end="opacity-100"
+			x-transition:leave="ease-in duration-200"
+			x-transition:leave-start="opacity-100"
+			x-transition:leave-end="opacity-0"
+			class="fixed inset-0 bg-gray-500/75 dark:bg-gray-900/75 transition-opacity"
+			@click="clickOutside()"></div>
+
+		{{-- Modal panel --}}
+		<div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+			<div x-show="isOpen"
+				x-transition:enter="ease-out duration-300"
+				x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+				x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+				x-transition:leave="ease-in duration-200"
+				x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+				x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+				x-ref="modalContent"
+				class="relative transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl transition-all sm:my-8 w-full"
+				:class="getSizeClass()">
+				{{-- Header --}}
+				<div class="bg-white dark:bg-gray-800 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+					<div class="sm:flex sm:items-start">
+						<div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
+							<h3 x-show="title"
+								x-text="title"
+								class="text-lg font-semibold leading-6 text-gray-900 dark:text-gray-100"
+								id="modal-title"></h3>
+							<div class="mt-2">
+								<div x-html="body" class="text-sm text-gray-500 dark:text-gray-400"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{{-- Footer --}}
+				<div x-show="buttons.length > 0" class="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-2">
+					<template x-for="(button, index) in buttons" :key="index">
+						<button type="button"
+							@click="handleButtonClick(button)"
+							:class="button.className || 'btn-secondary'"
+							class="inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm sm:ml-3 sm:w-auto"
+							x-text="button.label"></button>
+					</template>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{{-- Toast container for toastr compatibility --}}
+	<div id="toast-container" class="toast-bottom-right"></div>
 
 	{{-- JavaScript Dependencies --}}
 	<script src="{{ $U('/packages/jquery/dist/jquery.min.js?v=', true) }}{{ $version }}"></script>
