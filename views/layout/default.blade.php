@@ -1,5 +1,11 @@
 @php global $GROCY_REQUIRED_FRONTEND_PACKAGES; @endphp
 
+{{-- Use Tailwind layout if enabled --}}
+@if(defined('GROCY_USE_TAILWIND') && GROCY_USE_TAILWIND)
+	@include('layout.default-tailwind')
+	@php return; @endphp
+@endif
+
 <!DOCTYPE html>
 <html lang="{{ GROCY_LOCALE }}"
 	dir="{{ $dir }}">
