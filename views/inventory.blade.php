@@ -9,11 +9,11 @@
 	Grocy.DefaultMinAmount = '{{$DEFAULT_MIN_AMOUNT}}';
 </script>
 
-<div class="row">
-	<div class="col-12 col-md-6 col-xl-4 pb-3">
+<div class="flex flex-wrap">
+	<div class="w-full md:w-1/2 xl:w-1/3 pb-3">
 		<h2 class="title">@yield('title')</h2>
 
-		<hr class="my-2">
+		<hr class="my-2 border-t border-gray-200 dark:border-gray-700">
 
 		<form id="inventory-form"
 			novalidate>
@@ -28,9 +28,9 @@
 			'value' => 1,
 			'label' => 'New stock amount',
 			'additionalHtmlElements' => '<div id="inventory-change-info"
-				class="form-text text-muted d-none ml-3 my-0 w-100"></div>',
+				class="text-sm text-gray-500 dark:text-gray-400 hidden ml-3 my-0 w-full"></div>',
 			'additionalHtmlContextHelp' => '<div id="tare-weight-handling-info"
-				class="text-info font-italic d-none">' . $__t('Tare weight handling enabled - please weigh the whole container, the amount to be posted will be automatically calculcated') . '</div>'
+				class="text-info italic hidden">' . $__t('Tare weight handling enabled - please weigh the whole container, the amount to be posted will be automatically calculcated') . '</div>'
 			))
 
 			@if(boolval($userSettings['show_purchased_date_on_purchase']))
@@ -53,7 +53,7 @@
 			$additionalGroupCssClasses = '';
 			if (!GROCY_FEATURE_FLAG_STOCK_BEST_BEFORE_DATE_TRACKING)
 			{
-			$additionalGroupCssClasses = 'd-none';
+			$additionalGroupCssClasses = 'hidden';
 			}
 			@endphp
 			@include('components.datetimepicker', array(
@@ -109,15 +109,13 @@
 			@endif
 
 			@if(GROCY_FEATURE_FLAG_LABEL_PRINTER)
-			<div class="form-group">
-				<label for="stock_label_type">
+			<div class="mb-4">
+				<label for="stock_label_type" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
 					{{ $__t('Stock entry label') }}
-					<i class="fa-solid fa-question-circle text-muted"
-						data-toggle="tooltip"
-						data-trigger="hover click"
-						title="{{ $__t('This will apply to added products') }}"></i>
+					<i class="fa-solid fa-question-circle text-gray-400"
+						data-tooltip="{{ $__t('This will apply to added products') }}"></i>
 				</label>
-				<select class="custom-control custom-select"
+				<select class="select w-full"
 					id="stock_label_type"
 					name="stock_label_type">
 					<option value="0">{{ $__t('No label') }}</option>
@@ -125,24 +123,20 @@
 					<option value="2">{{ $__t('Label per unit') }}</option>
 				</select>
 				<div id="stock-entry-label-info"
-					class="form-text text-info"></div>
+					class="text-sm text-info mt-1"></div>
 			</div>
 			@endif
 
-			<div class="form-group">
-				<label for="note">
+			<div class="mb-4">
+				<label for="note" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
 					{{ $__t('Note') }}
-					<i class="fa-solid fa-question-circle text-muted"
-						data-toggle="tooltip"
-						data-trigger="hover click"
-						title="{{ $__t('This will apply to added products') }}"></i>
+					<i class="fa-solid fa-question-circle text-gray-400"
+						data-tooltip="{{ $__t('This will apply to added products') }}"></i>
 				</label>
-				<div class="input-group">
-					<input type="text"
-						class="form-control"
-						id="note"
-						name="note">
-				</div>
+				<input type="text"
+					class="input w-full"
+					id="note"
+					name="note">
 			</div>
 
 			@include('components.userfieldsform', array(
@@ -151,12 +145,12 @@
 			))
 
 			<button id="save-inventory-button"
-				class="btn btn-success">{{ $__t('OK') }}</button>
+				class="btn-primary">{{ $__t('OK') }}</button>
 
 		</form>
 	</div>
 
-	<div class="col-12 col-md-6 col-xl-4 hide-when-embedded">
+	<div class="w-full md:w-1/2 xl:w-1/3 hide-when-embedded">
 		@include('components.productcard')
 	</div>
 </div>

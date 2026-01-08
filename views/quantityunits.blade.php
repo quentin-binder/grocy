@@ -5,31 +5,33 @@
 @section('title', $__t('Quantity units'))
 
 @section('content')
-<div class="row">
-	<div class="col">
-		<div class="title-related-links">
-			<h2 class="title">@yield('title')</h2>
-			<div class="float-right @if($embedded) pr-5 @endif">
-				<button class="btn btn-outline-dark d-md-none mt-2 order-1 order-md-3"
-					type="button"
-					data-toggle="collapse"
-					data-target="#table-filter-row">
-					<i class="fa-solid fa-filter"></i>
-				</button>
-				<button class="btn btn-outline-dark d-md-none mt-2 order-1 order-md-3"
-					type="button"
-					data-toggle="collapse"
-					data-target="#related-links">
-					<i class="fa-solid fa-ellipsis-v"></i>
-				</button>
+<div class="flex flex-wrap">
+	<div class="w-full">
+		<div class="mb-4">
+			<div class="flex flex-wrap items-center justify-between gap-4">
+				<h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">@yield('title')</h2>
+				<div class="flex gap-2 @if($embedded) pr-5 @endif">
+					<button class="btn-secondary md:hidden"
+						type="button"
+						x-data
+						@click="$el.nextElementSibling?.nextElementSibling?.classList.toggle('hidden')">
+						<i class="fa-solid fa-filter"></i>
+					</button>
+					<button class="btn-secondary md:hidden"
+						type="button"
+						x-data
+						@click="document.getElementById('related-links')?.classList.toggle('hidden')">
+						<i class="fa-solid fa-ellipsis-v"></i>
+					</button>
+				</div>
 			</div>
-			<div class="related-links collapse d-md-flex order-2 width-xs-sm-100"
+			<div class="hidden md:flex flex-wrap gap-2 mt-4"
 				id="related-links">
-				<a class="btn btn-primary responsive-button m-1 mt-md-0 mb-md-0 float-right"
+				<a class="btn-primary"
 					href="{{ $U('/quantityunit/new') }}">
 					{{ $__t('Add') }}
 				</a>
-				<a class="btn btn-outline-secondary m-1 mt-md-0 mb-md-0 float-right"
+				<a class="btn-secondary"
 					href="{{ $U('/userfields?entity=quantity_units') }}">
 					{{ $__t('Configure userfields') }}
 				</a>
@@ -38,55 +40,56 @@
 	</div>
 </div>
 
-<hr class="my-2">
+<hr class="my-4 border-gray-200 dark:border-gray-700">
 
-<div class="row collapse d-md-flex"
+<div class="hidden md:flex flex-wrap gap-4 mb-4"
 	id="table-filter-row">
-	<div class="col-12 col-md-6 col-xl-3">
-		<div class="input-group">
-			<div class="input-group-prepend">
-				<span class="input-group-text"><i class="fa-solid fa-search"></i></span>
-			</div>
+	<div class="w-full md:w-auto md:flex-1 xl:max-w-xs">
+		<div class="flex">
+			<span class="inline-flex items-center px-3 border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-l">
+				<i class="fa-solid fa-search"></i>
+			</span>
 			<input type="text"
 				id="search"
-				class="form-control"
+				class="input rounded-l-none"
 				placeholder="{{ $__t('Search') }}">
 		</div>
 	</div>
-	<div class="col-12 col-md-6 col-xl-3">
-		<div class="form-check custom-control custom-checkbox">
-			<input class="form-check-input custom-control-input"
+	<div class="w-full md:w-auto md:flex-1 xl:max-w-xs">
+		<div class="flex items-center gap-2">
+			<input class="w-4 h-4 text-primary-500 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500"
 				type="checkbox"
 				id="show-disabled">
-			<label class="form-check-label custom-control-label"
+			<label class="text-sm text-gray-700 dark:text-gray-300"
 				for="show-disabled">
 				{{ $__t('Show disabled') }}
 			</label>
 		</div>
 	</div>
-	<div class="col">
-		<div class="float-right">
+	<div class="w-full md:w-auto ml-auto">
+		<div class="flex justify-end">
 			<button id="clear-filter-button"
-				class="btn btn-sm btn-outline-info"
-				data-toggle="tooltip"
-				title="{{ $__t('Clear filter') }}">
+				class="btn-secondary text-sm"
+				data-tooltip="{{ $__t('Clear filter') }}">
 				<i class="fa-solid fa-filter-circle-xmark"></i>
 			</button>
 		</div>
 	</div>
 </div>
 
-<div class="row">
-	<div class="col">
+<div class="flex flex-wrap">
+	<div class="w-full">
 		<table id="quantityunits-table"
-			class="table table-sm table-striped nowrap w-100">
+			class="w-full text-sm">
 			<thead>
 				<tr>
-					<th class="border-right"><a class="text-muted change-table-columns-visibility-button"
-							data-toggle="tooltip"
-							title="{{ $__t('Table options') }}"
+					<th class="border-r border-gray-300 dark:border-gray-600">
+						<a class="text-gray-500 dark:text-gray-400 change-table-columns-visibility-button"
+							data-tooltip="{{ $__t('Table options') }}"
 							data-table-selector="#quantityunits-table"
-							href="#"><i class="fa-solid fa-eye"></i></a>
+							href="#">
+							<i class="fa-solid fa-eye"></i>
+						</a>
 					</th>
 					<th>{{ $__t('Name') }}</th>
 					<th>{{ $__t('Description') }}</th>
@@ -96,24 +99,24 @@
 					))
 				</tr>
 			</thead>
-			<tbody class="d-none">
+			<tbody class="hidden">
 				@foreach($quantityunits as $quantityunit)
-				<tr class="@if($quantityunit->active == 0) text-muted @endif">
-					<td class="fit-content border-right">
-						<a class="btn btn-info btn-sm"
-							href="{{ $U('/quantityunit/') }}{{ $quantityunit->id }}"
-							data-toggle="tooltip"
-							title="{{ $__t('Edit this item') }}">
-							<i class="fa-solid fa-edit"></i>
-						</a>
-						<a class="btn btn-danger btn-sm quantityunit-delete-button"
-							href="#"
-							data-quantityunit-id="{{ $quantityunit->id }}"
-							data-quantityunit-name="{{ $quantityunit->name }}"
-							data-toggle="tooltip"
-							title="{{ $__t('Delete this item') }}">
-							<i class="fa-solid fa-trash"></i>
-						</a>
+				<tr class="@if($quantityunit->active == 0) text-gray-400 dark:text-gray-500 @endif">
+					<td class="w-auto border-r border-gray-300 dark:border-gray-600">
+						<div class="flex gap-1">
+							<a class="btn-primary text-sm px-2 py-1"
+								href="{{ $U('/quantityunit/') }}{{ $quantityunit->id }}"
+								data-tooltip="{{ $__t('Edit this item') }}">
+								<i class="fa-solid fa-edit"></i>
+							</a>
+							<a class="btn-danger text-sm px-2 py-1 quantityunit-delete-button"
+								href="#"
+								data-quantityunit-id="{{ $quantityunit->id }}"
+								data-quantityunit-name="{{ $quantityunit->name }}"
+								data-tooltip="{{ $__t('Delete this item') }}">
+								<i class="fa-solid fa-trash"></i>
+							</a>
+						</div>
 					</td>
 					<td>
 						{{ $quantityunit->name }}

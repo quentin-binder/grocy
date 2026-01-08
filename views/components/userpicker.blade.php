@@ -10,12 +10,12 @@
 @php if(empty($prefillByUserId)) { $prefillByUserId = ''; } @endphp
 @php if(!isset($nextInputSelector)) { $nextInputSelector = ''; } @endphp
 
-<div class="form-group"
+<div class="mb-4"
 	data-next-input-selector="{{ $nextInputSelector }}"
 	data-prefill-by-username="{{ $prefillByUsername }}"
 	data-prefill-by-user-id="{{ $prefillByUserId }}">
-	<label for="user_id">{{ $__t($label) }}</label>
-	<select class="form-control user-combobox"
+	<label for="user_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ $__t($label) }}</label>
+	<select class="select w-full user-combobox"
 		id="user_id"
 		name="user_id">
 		<option value=""></option>

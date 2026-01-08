@@ -126,61 +126,61 @@
 - [x] 6.3 Migrate consume.blade.php
 - [x] 6.4 Migrate shoppinglist.blade.php
 - [x] 6.5 Migrate transfer.blade.php
-- [ ] 6.6 Migrate inventory.blade.php
+- [~] 6.6 Migrate inventory.blade.php
 
 ---
 
 ## Phase 6: Page Migration - Priority 2 (Components)
 
-- [ ] 6.7 Migrate components/productpicker.blade.php
-- [ ] 6.8 Migrate components/datetimepicker.blade.php (convert to Flatpickr)
-- [ ] 6.9 Migrate components/datetimepicker2.blade.php
-- [ ] 6.10 Migrate components/numberpicker.blade.php
-- [ ] 6.11 Migrate components/productamountpicker.blade.php
-- [ ] 6.12 Migrate components/productcard.blade.php
-- [ ] 6.13 Migrate components/locationpicker.blade.php
-- [ ] 6.14 Migrate components/userpicker.blade.php
-- [ ] 6.15 Migrate components/recipepicker.blade.php
-- [ ] 6.16 Migrate components/shoppinglocationpicker.blade.php
-- [ ] 6.17 Migrate components/userfieldsform.blade.php
-- [ ] 6.18 Migrate components/userfields_thead.blade.php
-- [ ] 6.19 Migrate components/userfields_tbody.blade.php
-- [ ] 6.20 Migrate components/calendarcard.blade.php
-- [ ] 6.21 Migrate components/chorecard.blade.php
-- [ ] 6.22 Migrate components/batterycard.blade.php
-- [ ] 6.23 Migrate components/camerabarcodescanner.blade.php
-- [ ] 6.24 Migrate components/userpermission_select.blade.php
+- [~] 6.7 Migrate components/productpicker.blade.php
+- [~] 6.8 Migrate components/datetimepicker.blade.php (convert to Flatpickr)
+- [~] 6.9 Migrate components/datetimepicker2.blade.php
+- [~] 6.10 Migrate components/numberpicker.blade.php
+- [x] 6.11 Migrate components/productamountpicker.blade.php
+- [x] 6.12 Migrate components/productcard.blade.php
+- [x] 6.13 Migrate components/locationpicker.blade.php
+- [x] 6.14 Migrate components/userpicker.blade.php
+- [x] 6.15 Migrate components/recipepicker.blade.php
+- [~] 6.16 Migrate components/shoppinglocationpicker.blade.php
+- [~] 6.17 Migrate components/userfieldsform.blade.php
+- [~] 6.18 Migrate components/userfields_thead.blade.php
+- [~] 6.19 Migrate components/userfields_tbody.blade.php
+- [~] 6.20 Migrate components/calendarcard.blade.php
+- [x] 6.21 Migrate components/chorecard.blade.php
+- [x] 6.22 Migrate components/batterycard.blade.php
+- [x] 6.23 Migrate components/camerabarcodescanner.blade.php
+- [x] 6.24 Migrate components/userpermission_select.blade.php
 
 ---
 
 ## Phase 6: Page Migration - Priority 3 (Secondary Pages)
 
-- [ ] 6.25 Migrate recipes.blade.php
-- [ ] 6.26 Migrate recipeform.blade.php
-- [ ] 6.27 Migrate recipesettings.blade.php
-- [ ] 6.28 Migrate mealplan.blade.php
-- [ ] 6.29 Migrate mealplansections.blade.php
-- [ ] 6.30 Migrate products.blade.php
-- [ ] 6.31 Migrate productform.blade.php
-- [ ] 6.32 Migrate choresoverview.blade.php
-- [ ] 6.33 Migrate choretracking.blade.php
-- [ ] 6.34 Migrate tasks.blade.php
-- [ ] 6.35 Migrate taskform.blade.php
-- [ ] 6.36 Migrate batteriesoverview.blade.php
-- [ ] 6.37 Migrate batterytracking.blade.php
-- [ ] 6.38 Migrate equipment.blade.php
-- [ ] 6.39 Migrate equipmentform.blade.php
-- [ ] 6.40 Migrate calendar.blade.php
+- [x] 6.25 Migrate recipes.blade.php
+- [~] 6.26 Migrate recipeform.blade.php
+- [~] 6.27 Migrate recipesettings.blade.php
+- [~] 6.28 Migrate mealplan.blade.php
+- [~] 6.29 Migrate mealplansections.blade.php
+- [~] 6.30 Migrate products.blade.php
+- [~] 6.31 Migrate productform.blade.php
+- [~] 6.32 Migrate choresoverview.blade.php
+- [~] 6.33 Migrate choretracking.blade.php
+- [~] 6.34 Migrate tasks.blade.php
+- [~] 6.35 Migrate taskform.blade.php
+- [~] 6.36 Migrate batteriesoverview.blade.php
+- [~] 6.37 Migrate batterytracking.blade.php
+- [~] 6.38 Migrate equipment.blade.php
+- [~] 6.39 Migrate equipmentform.blade.php
+- [~] 6.40 Migrate calendar.blade.php
 
 ---
 
 ## Phase 6: Page Migration - Priority 4 (Master Data)
 
-- [ ] 6.41 Migrate locations.blade.php
-- [ ] 6.42 Migrate locationform.blade.php
-- [ ] 6.43 Migrate quantityunits.blade.php
-- [ ] 6.44 Migrate quantityunitform.blade.php
-- [ ] 6.45 Migrate quantityunitconversionform.blade.php
+- [x] 6.41 Migrate locations.blade.php
+- [x] 6.42 Migrate locationform.blade.php
+- [x] 6.43 Migrate quantityunits.blade.php
+- [x] 6.44 Migrate quantityunitform.blade.php
+- [x] 6.45 Migrate quantityunitconversionform.blade.php
 - [ ] 6.46 Migrate productgroups.blade.php
 - [ ] 6.47 Migrate productgroupform.blade.php
 - [ ] 6.48 Migrate shoppinglocations.blade.php
@@ -284,6 +284,9 @@
 - **Session 2026-01-08 (Phase 4)**: Completed Alpine.js Components. Created modal.js with GrocyModal compatibility (bootbox shim), dropdown.js with keyboard navigation, tooltip.js with Tippy.js integration (auto-initializes on [data-tooltip] and [title] elements), toast.js with toastr compatibility layer. Added modal HTML template to layout with transitions and focus trapping. Build verified: CSS 34.54KB (gzip 6.91KB), JS 110.47KB (gzip 37.69KB).
 - **Session 2026-01-08 (Phase 5)**: Completed Third-Party Library Styling. Created vendor CSS files for DataTables (table headers, sorting icons, pagination, search, length selector, dark mode), Flatpickr (calendar popup, day cells, month navigation, time picker, dark mode), FullCalendar (toolbar buttons, day cells, events, list view, popovers, dark mode), and Summernote WYSIWYG editor (toolbar, editing area, dropdowns, modals, dark mode). Created flatpickr.js helper with date/time/datetime/range picker initialization, locale support, Tempus Dominus compatibility layer, and auto-initialization via data attributes. Build verified: CSS 70.39KB (gzip 12.01KB), JS 164.87KB (gzip 53.22KB).
 - **Session 2026-01-08 (Phase 6 - Core Pages)**: Migrated 5 core pages from Bootstrap to Tailwind CSS: stockoverview.blade.php, purchase.blade.php, consume.blade.php, shoppinglist.blade.php, transfer.blade.php. Converted Bootstrap grid (row/col-*) to Tailwind flex/width utilities, form controls to custom .input/.select classes, buttons to .btn-* classes, and utility classes (d-none to hidden, d-md-* to md:*, etc.). Added Alpine.js x-data dropdowns for inline menus. Build verified: CSS 74.08KB (gzip 12.72KB), JS 164.87KB (gzip 53.22KB).
+- **Session 2026-01-08 (Phase 6 - Components Part 2)**: Migrated 5 component files from Bootstrap to Tailwind CSS: productamountpicker.blade.php, productcard.blade.php, locationpicker.blade.php, userpicker.blade.php, recipepicker.blade.php. Converted form-group to mb-4, form-control to .select class with w-full, labels to Tailwind typography classes with dark mode support, modal structure to Alpine.js compatible markup with fixed positioning, card layouts to flexbox with proper spacing. Updated tooltip attributes from data-toggle="tooltip" to data-tooltip. Build verified: CSS 74.87KB (gzip 12.89KB), JS 164.87KB (gzip 53.22KB).
+- **Session 2026-01-08 (Phase 6 - Components Part 3 & Recipes Page)**: Migrated 4 component files and 1 major page from Bootstrap to Tailwind CSS: chorecard.blade.php (modal with Alpine.js, card headers with flex layout), batterycard.blade.php (modal structure, button styling), camerabarcodescanner.blade.php (already minimal, no changes needed), userpermission_select.blade.php (checkbox with flex layout), and recipes.blade.php (complex page with list/gallery tabs using Alpine.js, DataTables integration, filter controls, dropdown menus with Alpine.js, recipe detail card with nested tabs, ingredient/preparation sections, add-to-mealplan modal). Converted Bootstrap modals to Alpine.js x-data/x-show patterns, nav-tabs to Alpine.js tab switching, Bootstrap grid to Tailwind flexbox, form controls to Tailwind classes, all utility classes (d-none to hidden, d-md-* to md:*, text-muted to text-gray-500 with dark mode). Build verified: CSS 75.83KB (gzip 13.07KB), JS 164.87KB (gzip 53.22KB).
+- **Session 2026-01-08 (Phase 6 - Master Data Pages)**: Migrated 5 master data management pages from Bootstrap to Tailwind CSS: locations.blade.php, locationform.blade.php, quantityunits.blade.php, quantityunitform.blade.php, quantityunitconversionform.blade.php. Converted Bootstrap grid (row/col-*) to Tailwind flex/width utilities, table layouts with DataTables integration, form controls to .input/.select classes with full width styling, checkboxes to custom styled inputs, buttons to .btn-* classes, all utility classes (d-none to hidden, d-md-* to md:*, text-muted to text-gray-500 dark:text-gray-400). Added Alpine.js x-data for mobile toggle buttons. Converted form validation feedback to Tailwind text-red classes. Updated tooltip attributes from data-toggle="tooltip" to data-tooltip. Build verified: CSS 75.92KB (gzip 13.11KB), JS 164.87KB (gzip 53.22KB).
 
 
 ---
@@ -297,8 +300,8 @@
 | 3. Layout & Navigation | 10 | 10 | 0 |
 | 4. Alpine.js Components | 8 | 8 | 0 |
 | 5. Third-Party Styling | 6 | 6 | 0 |
-| 6. Page Migration | 85 | 5 | 80 |
+| 6. Page Migration | 85 | 20 | 65 |
 | 7. Cleanup | 9 | 0 | 9 |
-| **TOTAL** | **140** | **51** | **89** |
+| **TOTAL** | **140** | **66** | **74** |
 
 Last Updated: 2026-01-08

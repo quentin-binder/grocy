@@ -1,12 +1,12 @@
-<div class="custom-control custom-checkbox">
+<div class="flex items-center gap-2">
 	<input type="checkbox"
 		name="{{ $perm->permission_name }}"
-		class="permission-cb form-check-input custom-control-input"
+		class="permission-cb checkbox"
 		data-perm-id="{{ $perm->permission_id }}"
 		id="perm-{{ $perm->permission_id }}"
 		@if($perm->has_permission) checked @endif
 	@if(isset($permParent) && $permParent->has_permission) disabled @endif>
-	<label class="form-check-label custom-control-label"
+	<label class="cursor-pointer"
 		for="perm-{{ $perm->permission_id }}">
 		{{ $__t($perm->permission_name) }}
 	</label>

@@ -12,21 +12,24 @@
 @php if(empty($hint)) { $hint = ''; } @endphp
 @php if(empty($nextInputSelector)) { $nextInputSelector = ''; } @endphp
 
-<div class="form-group"
+<div class="mb-4"
 	data-next-input-selector="{{ $nextInputSelector }}"
 	data-prefill-by-name="{{ $prefillByName }}"
 	data-prefill-by-id="{{ $prefillById }}">
-	<label class="w-100"
-		for="recipe_id">{{ $__t('Recipe') }}
-		@if(!empty($hint))
-		<i class="fa-solid fa-question-circle text-muted"
-			data-toggle="tooltip"
-			data-trigger="hover click"
-			title="{{ $hint }}"></i>
-		@endif
-		<i class="fa-solid fa-barcode float-right mt-1"></i>
+	<label class="w-full flex items-center justify-between text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+		for="recipe_id">
+		<span>
+			{{ $__t('Recipe') }}
+			@if(!empty($hint))
+			<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+				data-tooltip
+				data-trigger="hover click"
+				title="{{ $hint }}"></i>
+			@endif
+		</span>
+		<i class="fa-solid fa-barcode"></i>
 	</label>
-	<select class="form-control recipe-combobox barcodescanner-input"
+	<select class="select w-full recipe-combobox barcodescanner-input"
 		id="recipe_id"
 		name="recipe_id"
 		data-target="@recipepicker"
@@ -38,7 +41,7 @@
 		<option value="{{ $recipe->id }}">{{ $recipe->name }}</option>
 		@endforeach
 	</select>
-	<div class="invalid-feedback">{{ $__t('You have to select a recipe') }}</div>
+	<div class="text-sm text-danger mt-1 hidden invalid-feedback">{{ $__t('You have to select a recipe') }}</div>
 </div>
 
 @include('components.camerabarcodescanner')

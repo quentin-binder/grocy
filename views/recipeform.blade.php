@@ -9,9 +9,9 @@
 @endif
 
 @section('content')
-<div class="row">
-	<div class="col">
-		<h2 class="title">@yield('title')</h2>
+<div class="flex flex-wrap">
+	<div class="w-full">
+		<h2 class="text-2xl font-bold">@yield('title')</h2>
 
 		<script>
 			Grocy.EditMode = '{{ $mode }}';
@@ -33,22 +33,22 @@
 	</div>
 </div>
 
-<hr class="my-2">
+<hr class="my-2 border-t border-gray-200 dark:border-gray-700">
 
-<div class="row">
-	<div class="col-12 col-md-7 pb-3">
+<div class="flex flex-wrap">
+	<div class="w-full md:w-7/12 pb-3">
 		<form id="recipe-form"
 			novalidate>
 
-			<div class="form-group">
-				<label for="name">{{ $__t('Name') }}</label>
+			<div class="mb-4">
+				<label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ $__t('Name') }}</label>
 				<input type="text"
-					class="form-control"
+					class="input w-full"
 					required
 					id="name"
 					name="name"
 					value="@if($mode == 'edit'){{ $recipe->name }}@endif">
-				<div class="invalid-feedback">{{ $__t('A name is required') }}</div>
+				<div class="text-red-500 text-sm mt-1">{{ $__t('A name is required') }}</div>
 			</div>
 
 			@php if($mode == 'edit') { $value = $recipe->base_servings; } else { $value = 1; } @endphp
@@ -62,18 +62,16 @@
 			'additionalCssClasses' => 'locale-number-input locale-number-quantity-amount'
 			))
 
-			<div class="form-group">
-				<div class="custom-control custom-checkbox">
+			<div class="mb-4">
+				<div class="flex items-center gap-2">
 					<input @if($mode=='edit'
 						&&
-						$recipe->not_check_shoppinglist == 1) checked @endif class="form-check-input custom-control-input" type="checkbox" id="not_check_shoppinglist" name="not_check_shoppinglist" value="1">
-					<label class="form-check-label custom-control-label"
+						$recipe->not_check_shoppinglist == 1) checked @endif class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500 dark:bg-gray-700" type="checkbox" id="not_check_shoppinglist" name="not_check_shoppinglist" value="1">
+					<label class="text-sm text-gray-700 dark:text-gray-300"
 						for="not_check_shoppinglist">
-						{{ $__t('Do not check against the shopping list when adding missing items to it') }}&nbsp;
-						<i class="fa-solid fa-question-circle text-muted"
-							data-toggle="tooltip"
-							data-trigger="hover click"
-							title="{{ $__t('By default the amount to be added to the shopping list is "needed amount - stock amount - shopping list amount" - when this is enabled, it is only checked against the stock amount, not against what is already on the shopping list') }}"></i>
+						{{ $__t('Do not check against the shopping list when adding missing items to it') }}
+						<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+							data-tooltip="{{ $__t('By default the amount to be added to the shopping list is "needed amount - stock amount - shopping list amount" - when this is enabled, it is only checked against the stock amount, not against what is already on the shopping list') }}"></i>
 					</label>
 				</div>
 			</div>
@@ -92,44 +90,47 @@
 			'entity' => 'recipes'
 			))
 
-			<div class="form-group">
-				<label for="description">{{ $__t('Preparation') }}</label>
+			<div class="mb-4">
+				<label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ $__t('Preparation') }}</label>
 				<textarea id="description"
-					class="form-control wysiwyg-editor"
+					class="input w-full wysiwyg-editor"
 					name="description">@if($mode == 'edit'){{ $recipe->description }}@endif</textarea>
 			</div>
 
-			<small class="my-2 form-text text-muted @if($mode == 'edit') d-none @endif">{{ $__t('Save & continue to add ingredients and included recipes') }}</small>
+			<small class="my-2 text-sm text-gray-500 dark:text-gray-400 @if($mode == 'edit') hidden @endif">{{ $__t('Save & continue to add ingredients and included recipes') }}</small>
 
-			<button class="save-recipe btn btn-success mb-2"
+			<button class="save-recipe btn-primary mb-2"
 				data-location="continue">{{ $__t('Save & continue') }}</button>
-			<button class="save-recipe btn btn-info mb-2"
+			<button class="save-recipe bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors mb-2"
 				data-location="return">{{ $__t('Save & return to recipes') }}</button>
 
 		</form>
 	</div>
 
-	<div class="col-12 col-md-5 pb-3 @if($mode == 'create') d-none @endif">
-		<div class="row">
-			<div class="col">
-				<div class="title-related-links">
-					<h4>
+	<div class="w-full md:w-5/12 pb-3 @if($mode == 'create') hidden @endif">
+		<div class="flex flex-wrap">
+			<div class="w-full">
+				<div class="flex items-center justify-between mb-4">
+					<h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
 						{{ $__t('Ingredients list') }}
 					</h4>
-					<button class="btn btn-outline-dark d-md-none mt-2 float-right order-1 order-md-3"
-						type="button"
-						data-toggle="collapse"
-						data-target="#related-links">
-						<i class="fa-solid fa-ellipsis-v"></i>
-					</button>
-					<div class="related-links collapse d-md-flex order-2 width-xs-sm-100"
-						id="related-links">
-						<a id="recipe-pos-add-button"
-							class="btn btn-outline-primary btn-sm recipe-pos-add-button m-1 mt-md-0 mb-md-0 float-right"
+					<div x-data="{ open: false }">
+						<button class="btn-secondary md:hidden"
 							type="button"
-							href="#">
-							{{ $__t('Add') }}
-						</a>
+							@click="open = !open">
+							<i class="fa-solid fa-ellipsis-v"></i>
+						</button>
+						<div class="md:flex"
+							x-show="open"
+							x-collapse
+							x-cloak>
+							<a id="recipe-pos-add-button"
+								class="btn-primary text-sm recipe-pos-add-button m-1 md:m-0"
+								type="button"
+								href="#">
+								{{ $__t('Add') }}
+							</a>
+						</div>
 					</div>
 				</div>
 

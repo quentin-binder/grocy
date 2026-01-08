@@ -9,41 +9,43 @@
 @endif
 
 @section('content')
-<div class="row">
-	<div class="col">
-		<div class="title-related-links">
-			<h2 class="title">@yield('title')</h2>
+<div class="flex flex-wrap">
+	<div class="w-full">
+		<div class="flex flex-wrap items-center justify-between mb-4">
+			<h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">@yield('title')</h2>
 			@if($mode == 'edit')
-			<div class="float-right">
-				<button class="btn btn-outline-dark d-md-none mt-2 order-1 order-md-3"
-					type="button"
-					data-toggle="collapse"
-					data-target="#related-links">
-					<i class="fa-solid fa-ellipsis-v"></i>
-				</button>
-			</div>
-			<div class="related-links collapse d-md-flex order-2 width-xs-sm-100"
-				id="related-links">
-				<a class="btn btn-outline-secondary m-1 mt-md-0 mb-md-0 float-right show-as-dialog-link"
-					href="{{ $U('/stockentries?embedded&product=') }}{{ $product->id }}"
-					data-dialog-type="table">
-					{{ $__t('Stock entries') }}
-				</a>
-				<a class="btn btn-outline-secondary m-1 mt-md-0 mb-md-0 float-right show-as-dialog-link"
-					href="{{ $U('/stockjournal?embedded&product=') }}{{ $product->id }}"
-					data-dialog-type="table">
-					{{ $__t('Stock journal') }}
-				</a>
+			<div class="flex gap-2 mt-2 md:mt-0">
+				<div class="md:hidden">
+					<button class="btn-secondary"
+						type="button"
+						x-data
+						@click="$refs.relatedLinks.classList.toggle('hidden')">
+						<i class="fa-solid fa-ellipsis-v"></i>
+					</button>
+				</div>
+				<div x-ref="relatedLinks"
+					class="hidden md:flex gap-2 w-full md:w-auto">
+					<a class="btn-secondary text-sm show-as-dialog-link"
+						href="{{ $U('/stockentries?embedded&product=') }}{{ $product->id }}"
+						data-dialog-type="table">
+						{{ $__t('Stock entries') }}
+					</a>
+					<a class="btn-secondary text-sm show-as-dialog-link"
+						href="{{ $U('/stockjournal?embedded&product=') }}{{ $product->id }}"
+						data-dialog-type="table">
+						{{ $__t('Stock journal') }}
+					</a>
+				</div>
 			</div>
 			@endif
 		</div>
 	</div>
 </div>
 
-<hr class="my-2">
+<hr class="my-4 border-gray-200 dark:border-gray-700">
 
-<div class="row">
-	<div class="col-lg-6 col-12">
+<div class="flex flex-wrap -mx-2">
+	<div class="w-full lg:w-1/2 px-2">
 		<script>
 			Grocy.EditMode = '{{ $mode }}';
 		</script>
@@ -64,10 +66,10 @@
 			class="has-sticky-form-footer"
 			novalidate>
 
-			<div class="form-group">
-				<label for="name">{{ $__t('Name') }}</label>
+			<div class="mb-4">
+				<label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ $__t('Name') }}</label>
 				<input type="text"
-					class="form-control"
+					class="input w-full"
 					required
 					id="name"
 					name="name"
@@ -75,15 +77,15 @@
 				<div class="invalid-feedback">{{ $__t('A name is required') }}</div>
 			</div>
 
-			<div class="form-group">
-				<div class="custom-control custom-checkbox">
+			<div class="mb-4">
+				<div class="flex items-center gap-2">
 					<input @if($mode=='create'
 						)
 						checked
 						@elseif($mode=='edit'
 						&&
-						$product->active == 1) checked @endif class="form-check-input custom-control-input" type="checkbox" id="active" name="active" value="1">
-					<label class="form-check-label custom-control-label"
+						$product->active == 1) checked @endif class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600" type="checkbox" id="active" name="active" value="1">
+					<label class="text-sm text-gray-700 dark:text-gray-300"
 						for="active">{{ $__t('Active') }}</label>
 				</div>
 			</div>
@@ -107,18 +109,18 @@
 			))
 			@php $hint = ''; @endphp
 
-			<div class="form-group">
-				<label for="description">{{ $__t('Description') }}</label>
-				<textarea class="form-control wysiwyg-editor"
+			<div class="mb-4">
+				<label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ $__t('Description') }}</label>
+				<textarea class="input w-full wysiwyg-editor"
 					id="description"
 					name="description">@if($mode == 'edit'){{ $product->description }}@endif</textarea>
 			</div>
 
 			@if(GROCY_FEATURE_FLAG_STOCK_LOCATION_TRACKING)
-			<div class="form-group">
-				<label for="location_id">{{ $__t('Default location') }}</label>
+			<div class="mb-4">
+				<label for="location_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ $__t('Default location') }}</label>
 				<select required
-					class="custom-control custom-select"
+					class="select w-full"
 					id="location_id"
 					name="location_id">
 					<option></option>
@@ -130,15 +132,14 @@
 				</select>
 				<div class="invalid-feedback">{{ $__t('A location is required') }}</div>
 			</div>
-			<div class="form-group">
-				<label for="default_consume_location_id">
+			<div class="mb-4">
+				<label for="default_consume_location_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
 					{{ $__t('Default consume location') }}
-					<i class="fa-solid fa-question-circle text-muted"
-						data-toggle="tooltip"
-						data-trigger="hover click"
+					<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+						data-tooltip
 						title="{{ $__t('Stock entries at this location will be consumed first') }}"></i>
 				</label>
-				<select class="custom-control custom-select"
+				<select class="select w-full"
 					id="default_consume_location_id"
 					name="default_consume_location_id">
 					<option></option>
@@ -150,14 +151,13 @@
 				</select>
 
 				@if(GROCY_FEATURE_FLAG_STOCK_PRODUCT_OPENED_TRACKING)
-				<div class="custom-control custom-checkbox">
+				<div class="flex items-center gap-2 mt-2">
 					<input @if($mode=='edit'
 						&&
-						$product->move_on_open == 1) checked @endif class="form-check-input custom-control-input" type="checkbox" id="move_on_open" name="move_on_open" value="1">
-					<label class="form-check-label custom-control-label"
-						for="move_on_open">{{ $__t('Move on open') }}&nbsp;<i class="fa-solid fa-question-circle text-muted"
-							data-toggle="tooltip"
-							data-trigger="hover click"
+						$product->move_on_open == 1) checked @endif class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600" type="checkbox" id="move_on_open" name="move_on_open" value="1">
+					<label class="text-sm text-gray-700 dark:text-gray-300"
+						for="move_on_open">{{ $__t('Move on open') }}&nbsp;<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+							data-tooltip
 							title="{{$__t("When enabled, on marking this product as opened, the corresponding amount will be moved to the default consume location")}}"></i>
 					</label>
 				</div>
@@ -200,31 +200,29 @@
 			'additionalCssClasses' => 'locale-number-input locale-number-quantity-amount'
 			))
 
-			<div class="form-group @if(GROCY_FEATURE_FLAG_STOCK_PRODUCT_OPENED_TRACKING) mb-1 @endif">
-				<div class="custom-control custom-checkbox">
+			<div class="@if(GROCY_FEATURE_FLAG_STOCK_PRODUCT_OPENED_TRACKING) mb-2 @else mb-4 @endif">
+				<div class="flex items-center gap-2">
 					<input @if($mode=='edit'
 						&&
-						$product->cumulate_min_stock_amount_of_sub_products == 1) checked @endif class="form-check-input custom-control-input" type="checkbox" id="cumulate_min_stock_amount_of_sub_products" name="cumulate_min_stock_amount_of_sub_products" value="1">
-					<label class="form-check-label custom-control-label"
+						$product->cumulate_min_stock_amount_of_sub_products == 1) checked @endif class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600" type="checkbox" id="cumulate_min_stock_amount_of_sub_products" name="cumulate_min_stock_amount_of_sub_products" value="1">
+					<label class="text-sm text-gray-700 dark:text-gray-300"
 						for="cumulate_min_stock_amount_of_sub_products">{{ $__t('Accumulate sub products min. stock amount') }}
-						&nbsp;<i class="fa-solid fa-question-circle text-muted"
-							data-toggle="tooltip"
-							data-trigger="hover click"
+						&nbsp;<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+							data-tooltip
 							title="{{ $__t('If enabled, the min. stock amount of sub products will be accumulated into this product, means the sub product will never be missing, only this product') }}"></i>
 					</label>
 				</div>
 			</div>
 
 			@if(GROCY_FEATURE_FLAG_STOCK_PRODUCT_OPENED_TRACKING)
-			<div class="form-group">
-				<div class="custom-control custom-checkbox">
+			<div class="mb-4">
+				<div class="flex items-center gap-2">
 					<input @if($mode=='edit'
 						&&
-						$product->treat_opened_as_out_of_stock == 1) checked @endif class="form-check-input custom-control-input" type="checkbox" id="treat_opened_as_out_of_stock" name="treat_opened_as_out_of_stock" value="1">
-					<label class="form-check-label custom-control-label"
-						for="treat_opened_as_out_of_stock">{{ $__t('Treat opened as out of stock') }}&nbsp;<i class="fa-solid fa-question-circle text-muted"
-							data-toggle="tooltip"
-							data-trigger="hover click"
+						$product->treat_opened_as_out_of_stock == 1) checked @endif class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600" type="checkbox" id="treat_opened_as_out_of_stock" name="treat_opened_as_out_of_stock" value="1">
+					<label class="text-sm text-gray-700 dark:text-gray-300"
+						for="treat_opened_as_out_of_stock">{{ $__t('Treat opened as out of stock') }}&nbsp;<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+							data-tooltip
 							title="{{ $__t('When enabled, opened items will be counted as missing for calculating if this product is below its minimum stock amount') }}"></i>
 					</label>
 				</div>
@@ -232,16 +230,15 @@
 			@endif
 
 			@if(GROCY_FEATURE_FLAG_STOCK_BEST_BEFORE_DATE_TRACKING)
-			<div class="form-group">
-				<label class="d-block my-0"
+			<div class="mb-4">
+				<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
 					for="location_id">{{ $__t('Due date type') }}
-					<i class="fa-solid fa-question-circle text-muted"
-						data-toggle="tooltip"
-						data-trigger="hover click"
+					<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+						data-tooltip
 						title="{{ $__t('Based on the selected type, the highlighting on the stock overview page will be different') }}"></i>
 				</label>
-				<div class="custom-control custom-radio mt-n2">
-					<input class="custom-control-input"
+				<div class="flex items-center gap-2 mb-1">
+					<input class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600"
 						type="radio"
 						name="due_type"
 						id="due-type-bestbefore"
@@ -249,16 +246,15 @@
 						@if($mode=='edit'
 						&&
 						$product->due_type == 1) checked @else checked @endif>
-					<label class="custom-control-label"
+					<label class="text-sm text-gray-700 dark:text-gray-300"
 						for="due-type-bestbefore">{{ $__t('Best before date') }}
-						<i class="fa-solid fa-question-circle text-muted"
-							data-toggle="tooltip"
-							data-trigger="hover click"
+						<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+							data-tooltip
 							title="{{ $__t('Means that the product is maybe still safe to be consumed after its due date is reached') }}"></i>
 					</label>
 				</div>
-				<div class="custom-control custom-radio mt-n2">
-					<input class="custom-control-input"
+				<div class="flex items-center gap-2">
+					<input class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600"
 						type="radio"
 						name="due_type"
 						id="due-type-expiration"
@@ -266,11 +262,10 @@
 						@if($mode=='edit'
 						&&
 						$product->due_type == 2) checked @endif>
-					<label class="custom-control-label"
+					<label class="text-sm text-gray-700 dark:text-gray-300"
 						for="due-type-expiration">{{ $__t('Expiration date') }}
-						<i class="fa-solid fa-question-circle text-muted"
-							data-toggle="tooltip"
-							data-trigger="hover click"
+						<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+							data-tooltip
 							title="{{ $__t('Means that the product is not safe to be consumed after its due date is reached') }}"></i>
 					</label>
 				</div>
@@ -330,15 +325,14 @@
 			'hint' => $__t('On moving this product from a freezer location (so when thawing it), the due date will be replaced by today + this amount of days')
 			))
 
-			<div class="form-group">
-				<div class="custom-control custom-checkbox">
+			<div class="mb-4">
+				<div class="flex items-center gap-2">
 					<input @if($mode=='edit'
 						&&
-						$product->should_not_be_frozen == 1) checked @endif class="form-check-input custom-control-input" type="checkbox" id="should_not_be_frozen" name="should_not_be_frozen" value="1">
-					<label class="form-check-label custom-control-label"
-						for="should_not_be_frozen">{{ $__t('Should not be frozen') }}&nbsp;<i class="fa-solid fa-question-circle text-muted"
-							data-toggle="tooltip"
-							data-trigger="hover click"
+						$product->should_not_be_frozen == 1) checked @endif class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600" type="checkbox" id="should_not_be_frozen" name="should_not_be_frozen" value="1">
+					<label class="text-sm text-gray-700 dark:text-gray-300"
+						for="should_not_be_frozen">{{ $__t('Should not be frozen') }}&nbsp;<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+							data-tooltip
 							title="{{ $__t('When enabled, on moving this product to a freezer location (so when freezing it), a warning will be shown') }}"></i>
 					</label>
 				</div>
@@ -355,9 +349,9 @@
 				value="0">
 			@endif
 
-			<div class="form-group">
-				<label for="product_group_id">{{ $__t('Product group') }}</label>
-				<select class="custom-control custom-select"
+			<div class="mb-4">
+				<label for="product_group_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ $__t('Product group') }}</label>
+				<select class="select w-full"
 					id="product_group_id"
 					name="product_group_id">
 					<option></option>
@@ -369,10 +363,10 @@
 				</select>
 			</div>
 
-			<div class="form-group">
-				<label for="qu_id_stock">{{ $__t('Quantity unit stock') }}</label>
+			<div class="mb-4">
+				<label for="qu_id_stock" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ $__t('Quantity unit stock') }}</label>
 				<select required
-					class="custom-control custom-select input-group-qu"
+					class="select w-full input-group-qu"
 					id="qu_id_stock"
 					name="qu_id_stock">
 					<option></option>
@@ -385,14 +379,14 @@
 				<div class="invalid-feedback">{{ $__t('A quantity unit is required') }}</div>
 			</div>
 
-			<div class="form-group">
-				<label for="qu_id_purchase">{{ $__t('Default quantity unit purchase') }}</label>
-				<i class="fa-solid fa-question-circle text-muted"
-					data-toggle="tooltip"
-					data-trigger="hover click"
+			<div class="mb-4">
+				<label for="qu_id_purchase" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ $__t('Default quantity unit purchase') }}
+				<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+					data-tooltip
 					title="{{ $__t('This is the default quantity unit used on purchase and when adding this product to the shopping list') }}"></i>
+				</label>
 				<select required
-					class="custom-control custom-select input-group-qu"
+					class="select w-full input-group-qu"
 					id="qu_id_purchase"
 					name="qu_id_purchase">
 					<option></option>
@@ -405,14 +399,14 @@
 				<div class="invalid-feedback">{{ $__t('A quantity unit is required') }}</div>
 			</div>
 
-			<div class="form-group">
-				<label for="qu_id_consume">{{ $__t('Default quantity unit consume') }}</label>
-				<i class="fa-solid fa-question-circle text-muted"
-					data-toggle="tooltip"
-					data-trigger="hover click"
+			<div class="mb-4">
+				<label for="qu_id_consume" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ $__t('Default quantity unit consume') }}
+				<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+					data-tooltip
 					title="{{ $__t('This is the default quantity unit used when consuming this product') }}"></i>
+				</label>
 				<select required
-					class="custom-control custom-select input-group-qu"
+					class="select w-full input-group-qu"
 					id="qu_id_consume"
 					name="qu_id_consume">
 					<option></option>
@@ -425,14 +419,14 @@
 				<div class="invalid-feedback">{{ $__t('A quantity unit is required') }}</div>
 			</div>
 
-			<div class="form-group">
-				<label for="qu_id_price">{{ $__t('Quantity unit for prices') }}</label>
-				<i class="fa-solid fa-question-circle text-muted"
-					data-toggle="tooltip"
-					data-trigger="hover click"
+			<div class="mb-4">
+				<label for="qu_id_price" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ $__t('Quantity unit for prices') }}
+				<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+					data-tooltip
 					title="{{ $__t('When displaying prices for this product, they will be related to this quantity unit') }}"></i>
+				</label>
 				<select required
-					class="custom-control custom-select input-group-qu"
+					class="select w-full input-group-qu"
 					id="qu_id_price"
 					name="qu_id_price">
 					<option></option>
@@ -445,16 +439,15 @@
 				<div class="invalid-feedback">{{ $__t('A quantity unit is required') }}</div>
 			</div>
 
-			<div class="form-group mb-1">
-				<div class="custom-control custom-checkbox">
+			<div class="mb-2">
+				<div class="flex items-center gap-2">
 					<input @if($mode=='edit'
 						&&
-						$product->enable_tare_weight_handling == 1) checked @endif class="form-check-input custom-control-input" type="checkbox" id="enable_tare_weight_handling" name="enable_tare_weight_handling" value="1">
-					<label class="form-check-label custom-control-label"
+						$product->enable_tare_weight_handling == 1) checked @endif class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600" type="checkbox" id="enable_tare_weight_handling" name="enable_tare_weight_handling" value="1">
+					<label class="text-sm text-gray-700 dark:text-gray-300"
 						for="enable_tare_weight_handling">{{ $__t('Enable tare weight handling') }}
-						&nbsp;<i class="fa-solid fa-question-circle text-muted"
-							data-toggle="tooltip"
-							data-trigger="hover click"
+						&nbsp;<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+							data-tooltip
 							title="{{ $__t('This is useful e.g. for flour in jars - on purchase/consume/inventory you always weigh the whole jar, the amount to be posted is then automatically calculated based on what is in stock and the tare weight defined below') }}"></i>
 					</label>
 				</div>
@@ -475,16 +468,15 @@
 			@php $additionalAttributes = '' @endphp
 
 			@if(GROCY_FEATURE_FLAG_RECIPES)
-			<div class="form-group">
-				<div class="custom-control custom-checkbox">
+			<div class="mb-4">
+				<div class="flex items-center gap-2">
 					<input @if($mode=='edit'
 						&&
-						$product->not_check_stock_fulfillment_for_recipes == 1) checked @endif class="form-check-input custom-control-input" type="checkbox" id="not_check_stock_fulfillment_for_recipes" name="not_check_stock_fulfillment_for_recipes" value="1">
-					<label class="form-check-label custom-control-label"
+						$product->not_check_stock_fulfillment_for_recipes == 1) checked @endif class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600" type="checkbox" id="not_check_stock_fulfillment_for_recipes" name="not_check_stock_fulfillment_for_recipes" value="1">
+					<label class="text-sm text-gray-700 dark:text-gray-300"
 						for="not_check_stock_fulfillment_for_recipes">{{ $__t('Disable stock fulfillment checking for this ingredient') }}
-						&nbsp;<i class="fa-solid fa-question-circle text-muted"
-							data-toggle="tooltip"
-							data-trigger="hover click"
+						&nbsp;<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+							data-tooltip
 							title="{{ $__t('This will be used as the default setting when adding this product as a recipe ingredient') }}"></i>
 					</label>
 				</div>
@@ -534,13 +526,13 @@
 			))
 
 			@if(GROCY_FEATURE_FLAG_LABEL_PRINTER)
-			<div class="form-group">
-				<label for="default_stock_label_type">{{ $__t('Default stock entry label') }}</label>
-				<i class="fa-solid fa-question-circle text-muted"
-					data-toggle="tooltip"
-					data-trigger="hover click"
+			<div class="mb-4">
+				<label for="default_stock_label_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ $__t('Default stock entry label') }}
+				<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+					data-tooltip
 					title="{{ $__t('This is the default which will be prefilled on purchase') }}"></i>
-				<select class="custom-control custom-select"
+				</label>
+				<select class="select w-full"
 					id="default_stock_label_type"
 					name="default_stock_label_type">
 					<option @if($mode=='edit'
@@ -555,15 +547,14 @@
 				</select>
 			</div>
 
-			<div class="form-group">
-				<div class="custom-control custom-checkbox">
+			<div class="mb-4">
+				<div class="flex items-center gap-2">
 					<input @if($mode=='edit'
 						&&
-						$product->auto_reprint_stock_label == 1) checked @endif class="form-check-input custom-control-input" type="checkbox" id="auto_reprint_stock_label" name="auto_reprint_stock_label" value="1">
-					<label class="form-check-label custom-control-label"
-						for="auto_reprint_stock_label">{{ $__t('Auto reprint stock entry label') }}&nbsp;<i class="fa-solid fa-question-circle text-muted"
-							data-toggle="tooltip"
-							data-trigger="hover click"
+						$product->auto_reprint_stock_label == 1) checked @endif class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600" type="checkbox" id="auto_reprint_stock_label" name="auto_reprint_stock_label" value="1">
+					<label class="text-sm text-gray-700 dark:text-gray-300"
+						for="auto_reprint_stock_label">{{ $__t('Auto reprint stock entry label') }}&nbsp;<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+							data-tooltip
 							title="{{ $__t('When enabled, auto-changing the due date of a stock entry (by opening/freezing/thawing and having corresponding default due days set) will reprint its label') }}"></i>
 					</label>
 				</div>
@@ -571,16 +562,15 @@
 			@endif
 
 			@if(GROCY_FEATURE_FLAG_STOCK_PRICE_TRACKING)
-			<div class="form-group">
-				<label class="d-block my-0"
+			<div class="mb-4">
+				<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
 					for="default_purchase_price_type">{{ $__t('Default purchase price type') }}
-					<i class="fa-solid fa-question-circle text-muted"
-						data-toggle="tooltip"
-						data-trigger="hover click"
+					<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+						data-tooltip
 						title="{{ $__t('This will be used as the default price type selection on purchase') }}"></i>
 				</label>
-				<div class="custom-control custom-radio mt-n2">
-					<input class="custom-control-input"
+				<div class="flex items-center gap-2 mb-1">
+					<input class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600"
 						type="radio"
 						name="default_purchase_price_type"
 						id="default-purchase-price-type-unspecified"
@@ -588,12 +578,12 @@
 						@if($mode=='edit'
 						&&
 						$product->default_purchase_price_type == 1) checked @else checked @endif>
-					<label class="custom-control-label"
+					<label class="text-sm text-gray-700 dark:text-gray-300"
 						for="default-purchase-price-type-unspecified">{{ $__t('Unspecified') }}
 					</label>
 				</div>
-				<div class="custom-control custom-radio mt-n2">
-					<input class="custom-control-input"
+				<div class="flex items-center gap-2 mb-1">
+					<input class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600"
 						type="radio"
 						name="default_purchase_price_type"
 						id="default-purchase-price-type-unit-price"
@@ -601,12 +591,12 @@
 						@if($mode=='edit'
 						&&
 						$product->default_purchase_price_type == 2) checked @endif>
-					<label class="custom-control-label"
+					<label class="text-sm text-gray-700 dark:text-gray-300"
 						for="default-purchase-price-type-unit-price">{{ $__t('Unit price') }}
 					</label>
 				</div>
-				<div class="custom-control custom-radio mt-n2">
-					<input class="custom-control-input"
+				<div class="flex items-center gap-2">
+					<input class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600"
 						type="radio"
 						name="default_purchase_price_type"
 						id="default-purchase-price-type-total-price"
@@ -614,7 +604,7 @@
 						@if($mode=='edit'
 						&&
 						$product->default_purchase_price_type == 3) checked @endif>
-					<label class="custom-control-label"
+					<label class="text-sm text-gray-700 dark:text-gray-300"
 						for="default-purchase-price-type-total-price">{{ $__t('Total price') }}
 					</label>
 				</div>
@@ -622,41 +612,39 @@
 			@endif
 
 			@if(GROCY_FEATURE_FLAG_STOCK_PRODUCT_OPENED_TRACKING)
-			<div class="form-group">
-				<div class="custom-control custom-checkbox">
+			<div class="mb-4">
+				<div class="flex items-center gap-2">
 					<input @if($mode=='edit'
 						&&
-						$product->disable_open == 1) checked @endif class="form-check-input custom-control-input" type="checkbox" id="disable_open" name="disable_open" value="1">
-					<label class="form-check-label custom-control-label"
+						$product->disable_open == 1) checked @endif class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600" type="checkbox" id="disable_open" name="disable_open" value="1">
+					<label class="text-sm text-gray-700 dark:text-gray-300"
 						for="disable_open">{{ $__t('Can\'t be opened') }}
 					</label>
 				</div>
 			</div>
 			@endif
 
-			<div class="form-group">
-				<div class="custom-control custom-checkbox">
+			<div class="mb-4">
+				<div class="flex items-center gap-2">
 					<input @if($mode=='edit'
 						&&
-						$product->hide_on_stock_overview == 1) checked @endif class="form-check-input custom-control-input" type="checkbox" id="hide_on_stock_overview" name="hide_on_stock_overview" value="1">
-					<label class="form-check-label custom-control-label"
-						for="hide_on_stock_overview">{{ $__t('Never show on stock overview') }}&nbsp;<i class="fa-solid fa-question-circle text-muted"
-							data-toggle="tooltip"
-							data-trigger="hover click"
+						$product->hide_on_stock_overview == 1) checked @endif class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600" type="checkbox" id="hide_on_stock_overview" name="hide_on_stock_overview" value="1">
+					<label class="text-sm text-gray-700 dark:text-gray-300"
+						for="hide_on_stock_overview">{{ $__t('Never show on stock overview') }}&nbsp;<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+							data-tooltip
 							title="{{ $__t('The stock overview page lists all products which are currently in stock or below their min. stock amount - enable this to hide this product there always') }}"></i>
 					</label>
 				</div>
 			</div>
 
-			<div class="form-group">
-				<div class="custom-control custom-checkbox">
+			<div class="mb-4">
+				<div class="flex items-center gap-2">
 					<input @if($mode=='edit'
 						&&
-						$product->no_own_stock == 1) checked @endif class="form-check-input custom-control-input" type="checkbox" id="no_own_stock" name="no_own_stock" value="1">
-					<label class="form-check-label custom-control-label"
-						for="no_own_stock">{{ $__t('Disable own stock') }}&nbsp;<i class="fa-solid fa-question-circle text-muted"
-							data-toggle="tooltip"
-							data-trigger="hover click"
+						$product->no_own_stock == 1) checked @endif class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600" type="checkbox" id="no_own_stock" name="no_own_stock" value="1">
+					<label class="text-sm text-gray-700 dark:text-gray-300"
+						for="no_own_stock">{{ $__t('Disable own stock') }}&nbsp;<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+							data-tooltip
 							title="{{ $__t('When enabled, this product can\'t have own stock, means it will not be selectable on purchase (useful for parent products which are just used as a summary/total view of the child products)') }}"></i>
 					</label>
 				</div>
@@ -670,61 +658,65 @@
 			<div class="py-5"></div>
 			<div class="sticky-form-footer pt-1">
 				<small id="save-hint"
-					class="my-1 form-text text-muted @if($mode == 'edit') d-none @endif">{{ $__t('Save & continue to add quantity unit conversions & barcodes') }}</small>
+					class="my-1 text-sm text-gray-500 dark:text-gray-400 @if($mode == 'edit') hidden @endif">{{ $__t('Save & continue to add quantity unit conversions & barcodes') }}</small>
 
 				<button id="save-product-button"
-					class="save-product-button btn btn-success mb-2 default-submit-button"
+					class="save-product-button btn-success mb-2 default-submit-button"
 					data-location="continue">{{ $__t('Save & continue') }}</button>
-				<button class="save-product-button btn btn-info mb-2"
+				<button class="save-product-button btn-primary mb-2"
 					data-location="return">{{ $__t('Save & return to products') }}</button>
 			</div>
 		</form>
 
 	</div>
 
-	<div class="col-lg-6 col-12">
+	<div class="w-full lg:w-1/2 px-2">
 
-		<div class="row @if($mode == 'create' || !GROCY_FEATURE_FLAG_STOCK) d-none @endif">
-			<div class="col">
-				<div class="title-related-links">
-					<h4>
+		<div class="@if($mode == 'create' || !GROCY_FEATURE_FLAG_STOCK) hidden @endif">
+			<div class="w-full">
+				<div class="flex flex-wrap items-center justify-between mb-4">
+					<h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
 						{{ $__t('Barcodes') }}
 					</h4>
-					<button class="btn btn-outline-dark d-md-none mt-2 float-right order-1 order-md-3"
-						type="button"
-						data-toggle="collapse"
-						data-target="#related-links">
-						<i class="fa-solid fa-ellipsis-v"></i>
-					</button>
-					@if($mode == "edit")
-					<div class="related-links collapse d-md-flex order-2 width-xs-sm-100"
-						id="related-links">
-						<a class="btn btn-primary btn-sm m-1 mt-md-0 mb-md-0 float-right show-as-dialog-link"
-							href="{{ $U('/productbarcodes/new?embedded&product=' . $product->id ) }}">
-							{{ $__t('Add') }}
-						</a>
+					<div class="flex gap-2 mt-2 md:mt-0">
+						<div class="md:hidden">
+							<button class="btn-secondary"
+								type="button"
+								x-data
+								@click="$refs.barcodeLinks.classList.toggle('hidden')">
+								<i class="fa-solid fa-ellipsis-v"></i>
+							</button>
+						</div>
+						@if($mode == "edit")
+						<div x-ref="barcodeLinks"
+							class="hidden md:flex gap-2 w-full md:w-auto">
+							<a class="btn-primary text-sm show-as-dialog-link"
+								href="{{ $U('/productbarcodes/new?embedded&product=' . $product->id ) }}">
+								{{ $__t('Add') }}
+							</a>
+						</div>
+						@endif
 					</div>
-					@endif
 				</div>
 
 				<h5 id="barcode-headline-info"
-					class="text-muted font-italic"></h5>
+					class="text-gray-500 dark:text-gray-400 italic text-sm"></h5>
 
 				<table id="barcode-table"
 					class="table table-sm table-striped nowrap w-100">
 					<thead>
 						<tr>
-							<th class="border-right"><a class="text-muted change-table-columns-visibility-button"
-									data-toggle="tooltip"
+							<th class="border-r"><a class="text-gray-500 dark:text-gray-400 change-table-columns-visibility-button"
+									data-tooltip
 									title="{{ $__t('Table options') }}"
 									data-table-selector="#barcode-table"
 									href="#"><i class="fa-solid fa-eye"></i></a>
 							</th>
 							<th>{{ $__t('Barcode') }}</th>
-							<th class="@if(!GROCY_FEATURE_FLAG_STOCK_PRICE_TRACKING) d-none @endif allow-grouping">{{ $__t('Store') }}</th>
+							<th class="@if(!GROCY_FEATURE_FLAG_STOCK_PRICE_TRACKING) hidden @endif allow-grouping">{{ $__t('Store') }}</th>
 							<th class="allow-grouping">{{ $__t('Quantity unit') }}</th>
 							<th>{{ $__t('Amount') }}</th>
-							<th class="@if(!GROCY_FEATURE_FLAG_STOCK_PRICE_TRACKING) d-none @endif">{{ $__t('Last price') }}</th>
+							<th class="@if(!GROCY_FEATURE_FLAG_STOCK_PRICE_TRACKING) hidden @endif">{{ $__t('Last price') }}</th>
 							<th>{{ $__t('Note') }}</th>
 
 							@include('components.userfields_thead', array(
@@ -732,17 +724,17 @@
 							))
 						</tr>
 					</thead>
-					<tbody class="d-none">
+					<tbody class="hidden">
 						@if($mode == "edit")
 						@foreach($barcodes as $barcode)
 						@if($barcode->product_id == $product->id || $barcode->product_id == null)
 						<tr>
-							<td class="fit-content border-right">
-								<a class="btn btn-sm btn-info show-as-dialog-link @if($barcode->product_id == null) disabled @endif"
+							<td class="fit-content border-r">
+								<a class="btn-primary text-sm show-as-dialog-link @if($barcode->product_id == null) opacity-50 pointer-events-none @endif"
 									href="{{ $U('/productbarcodes/' . $barcode->id . '?embedded&product=' . $product->id ) }}">
 									<i class="fa-solid fa-edit"></i>
 								</a>
-								<a class="btn btn-sm btn-danger barcode-delete-button @if($barcode->product_id == null) disabled @endif"
+								<a class="btn-danger text-sm barcode-delete-button @if($barcode->product_id == null) opacity-50 pointer-events-none @endif"
 									href="#"
 									data-barcode-id="{{ $barcode->id }}"
 									data-barcode="{{ $barcode->barcode }}"
@@ -754,7 +746,7 @@
 							<td>
 								{{ $barcode->barcode }}
 							</td>
-							<td class="@if(!GROCY_FEATURE_FLAG_STOCK_PRICE_TRACKING) d-none @endif"
+							<td class="@if(!GROCY_FEATURE_FLAG_STOCK_PRICE_TRACKING) hidden @endif"
 								id="barcode-shopping-location">
 								@if (FindObjectInArrayByPropertyValue($shoppinglocations, 'id', $barcode->shopping_location_id) !== null)
 								{{ FindObjectInArrayByPropertyValue($shoppinglocations, 'id', $barcode->shopping_location_id)->name }}
@@ -770,7 +762,7 @@
 								<span class="locale-number locale-number-quantity-amount">{{ $barcode->amount }}</span>
 								@endif
 							</td>
-							<td class="@if(!GROCY_FEATURE_FLAG_STOCK_PRICE_TRACKING) d-none @endif">
+							<td class="@if(!GROCY_FEATURE_FLAG_STOCK_PRICE_TRACKING) hidden @endif">
 								<span class="locale-number locale-number-currency">{{ $barcode->last_price }}</span>
 							</td>
 							<td>
@@ -790,28 +782,27 @@
 			</div>
 		</div>
 
-		<div class="row mt-2 @if($mode == 'create') d-none @endif">
-			<div class="col clearfix">
-				<div class="title-related-links">
-					<h4>
-						<span class="ls-n1">{{ $__t('Grocycode') }}</span>
-						<i class="fa-solid fa-question-circle text-muted"
-							data-toggle="tooltip"
-							data-trigger="hover click"
+		<div class="mt-4 @if($mode == 'create') hidden @endif">
+			<div class="w-full">
+				<div class="mb-4">
+					<h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+						<span class="tracking-tight">{{ $__t('Grocycode') }}</span>
+						<i class="fa-solid fa-question-circle text-gray-500 dark:text-gray-400"
+							data-tooltip
 							title="{{ $__t('Grocycode is a unique referer to this %s in your Grocy instance - print it onto a label and scan it like any other barcode', $__t('Product')) }}"></i>
 					</h4>
-					<p>
+					<p class="mb-2">
 						@if($mode == 'edit')
 						<img src="{{ $U('/product/' . $product->id . '/grocycode?size=60') }}"
-							class="float-lg-left"
+							class="lg:float-left"
 							loading="lazy">
 						@endif
 					</p>
-					<p>
-						<a class="btn btn-outline-primary btn-sm"
+					<p class="flex gap-2">
+						<a class="btn-secondary text-sm"
 							href="{{ $U('/product/' . $product->id . '/grocycode?download=true') }}">{{ $__t('Download') }}</a>
 						@if(GROCY_FEATURE_FLAG_LABEL_PRINTER)
-						<a class="btn btn-outline-primary btn-sm product-grocycode-label-print"
+						<a class="btn-secondary text-sm product-grocycode-label-print"
 							data-product-id="{{ $product->id }}"
 							href="#">
 							{{ $__t('Print on label printer') }}
@@ -822,43 +813,47 @@
 			</div>
 		</div>
 
-		<div class="row @if(GROCY_FEATURE_FLAG_STOCK) mt-5 @endif @if($mode == 'create') d-none @endif">
-			<div class="col">
-				<div class="title-related-links">
-					<h4>
+		<div class="@if(GROCY_FEATURE_FLAG_STOCK) mt-8 @endif @if($mode == 'create') hidden @endif">
+			<div class="w-full">
+				<div class="flex flex-wrap items-center justify-between mb-4">
+					<h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
 						{{ $__t('Product specific QU conversions') }}
 					</h4>
-					<button class="btn btn-outline-dark d-md-none mt-2 float-right order-1 order-md-3"
-						type="button"
-						data-toggle="collapse"
-						data-target="#related-links">
-						<i class="fa-solid fa-ellipsis-v"></i>
-					</button>
-					@if($mode == "edit")
-					<div class="related-links collapse d-md-flex order-2 width-xs-sm-100"
-						id="related-links">
-						<a class="btn btn-primary btn-sm m-1 mt-md-0 mb-md-0 float-right show-as-dialog-link"
-							href="{{ $U('/quantityunitconversion/new?embedded&product=' . $product->id ) }}"
-							data-dialog-type="wider">
-							{{ $__t('Add') }}
-						</a>
-						<a class="btn btn-outline-primary btn-sm m-1 mt-md-0 mb-md-0 float-right show-as-dialog-link"
-							href="{{ $U('/quantityunitconversionsresolved?embedded&product=' . $product->id ) }}"
-							data-dialog-type="wider"
-							data-toggle="tooltip"
-							title="{{ $__t('This shows all to this product directly or indirectly related quantity units and their derived conversion factors') }}">
-							{{ $__t('Show resolved conversions') }}
-						</a>
+					<div class="flex gap-2 mt-2 md:mt-0">
+						<div class="md:hidden">
+							<button class="btn-secondary"
+								type="button"
+								x-data
+								@click="$refs.quLinks.classList.toggle('hidden')">
+								<i class="fa-solid fa-ellipsis-v"></i>
+							</button>
+						</div>
+						@if($mode == "edit")
+						<div x-ref="quLinks"
+							class="hidden md:flex gap-2 w-full md:w-auto">
+							<a class="btn-primary text-sm show-as-dialog-link"
+								href="{{ $U('/quantityunitconversion/new?embedded&product=' . $product->id ) }}"
+								data-dialog-type="wider">
+								{{ $__t('Add') }}
+							</a>
+							<a class="btn-secondary text-sm show-as-dialog-link"
+								href="{{ $U('/quantityunitconversionsresolved?embedded&product=' . $product->id ) }}"
+								data-dialog-type="wider"
+								data-tooltip
+								title="{{ $__t('This shows all to this product directly or indirectly related quantity units and their derived conversion factors') }}">
+								{{ $__t('Show resolved conversions') }}
+							</a>
+						</div>
+						@endif
 					</div>
-					@endif
 				</div>
 
 				<table id="qu-conversions-table-products"
 					class="table table-sm table-striped nowrap w-100">
 					<thead>
 						<tr>
-							<th class="border-right"><a class="text-muted change-table-columns-visibility-button"
-									data-toggle="tooltip"
+							<th class="border-r"><a class="text-gray-500 dark:text-gray-400 change-table-columns-visibility-button"
+									data-tooltip
 									title="{{ $__t('Table options') }}"
 									data-table-selector="#qu-conversions-table-products"
 									href="#"><i class="fa-solid fa-eye"></i></a>
@@ -869,17 +864,17 @@
 							<th></th>
 						</tr>
 					</thead>
-					<tbody class="d-none">
+					<tbody class="hidden">
 						@if($mode == "edit")
 						@foreach($quConversions as $quConversion)
 						<tr>
-							<td class="fit-content border-right">
-								<a class="btn btn-sm btn-info show-as-dialog-link @if($quConversion->product_id == null) disabled @endif"
+							<td class="fit-content border-r">
+								<a class="btn-primary text-sm show-as-dialog-link @if($quConversion->product_id == null) opacity-50 pointer-events-none @endif"
 									href="{{ $U('/quantityunitconversion/' . $quConversion->id . '?embedded&product=' . $product->id ) }}"
 									data-dialog-type="wider">
 									<i class="fa-solid fa-edit"></i>
 								</a>
-								<a class="btn btn-sm btn-danger qu-conversion-delete-button @if($quConversion->product_id == null) disabled @endif"
+								<a class="btn-danger text-sm qu-conversion-delete-button @if($quConversion->product_id == null) opacity-50 pointer-events-none @endif"
 									href="#"
 									data-qu-conversion-id="{{ $quConversion->id }}">
 									<i class="fa-solid fa-trash"></i>
@@ -894,7 +889,7 @@
 							<td>
 								<span class="locale-number locale-number-quantity-amount">{{ $quConversion->factor }}</span>
 							</td>
-							<td class="font-italic">
+							<td class="italic">
 								{!! $__t('This means 1 %1$s is the same as %2$s %3$s', FindObjectInArrayByPropertyValue($quantityunits, 'id', $quConversion->from_qu_id)->name, '<span class="locale-number locale-number-quantity-amount">' . $quConversion->factor . '</span>', $__n($quConversion->factor, FindObjectInArrayByPropertyValue($quantityunits, 'id', $quConversion->to_qu_id)->name, FindObjectInArrayByPropertyValue($quantityunits, 'id', $quConversion->to_qu_id)->name_plural, true)) !!}
 							</td>
 						</tr>
@@ -905,47 +900,53 @@
 			</div>
 		</div>
 
-		<div class="row @if($mode == 'edit') mt-5 @endif">
-			<div class="col">
-				<div class="title-related-links">
-					<h4>
+		<div class="@if($mode == 'edit') mt-8 @endif">
+			<div class="w-full">
+				<div class="mb-4">
+					<h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
 						{{ $__t('Picture') }}
 					</h4>
-					<div class="form-group w-75 m-0">
-						<div class="input-group">
-							<div class="custom-file">
+					<div class="w-full lg:w-3/4">
+						<div class="flex gap-2">
+							<div class="flex-1">
 								<input type="file"
-									class="custom-file-input"
+									class="block w-full text-sm text-gray-500 dark:text-gray-400
+									file:mr-4 file:py-2 file:px-4
+									file:rounded file:border-0
+									file:text-sm file:font-medium
+									file:bg-primary-50 file:text-primary-700
+									hover:file:bg-primary-100
+									dark:file:bg-gray-700 dark:file:text-gray-300"
 									id="product-picture"
 									accept="image/*">
 								<label id="product-picture-label"
-									class="custom-file-label @if(empty($product->picture_file_name)) d-none @endif"
+									class="text-sm text-gray-700 dark:text-gray-300 mt-1 block @if(empty($product->picture_file_name)) hidden @endif"
 									for="product-picture">
 									{{ $product->picture_file_name }}
 								</label>
 								<label id="product-picture-label-none"
-									class="custom-file-label @if(!empty($product->picture_file_name)) d-none @endif"
+									class="text-sm text-gray-500 dark:text-gray-400 mt-1 block @if(!empty($product->picture_file_name)) hidden @endif"
 									for="product-picture">
 									{{ $__t('No file selected') }}
 								</label>
 							</div>
-							<div class="input-group-append">
-								<span class="input-group-text"><i class="fa-solid fa-trash"
-										id="delete-current-product-picture-button"></i></span>
-							</div>
+							<button type="button" class="px-3 py-2 text-gray-600 dark:text-gray-400 hover:text-danger hover:dark:text-danger">
+								<i class="fa-solid fa-trash"
+									id="delete-current-product-picture-button"></i>
+							</button>
 						</div>
 					</div>
 				</div>
 				@if($mode == "edit" && !empty($product->picture_file_name))
 				<img id="current-product-picture"
 					src="{{ $U('/api/files/productpictures/' . base64_encode($product->picture_file_name) . '?force_serve_as=picture&best_fit_width=400') }}"
-					class="img-fluid img-thumbnail mt-2 mb-5"
+					class="max-w-full rounded-lg border border-gray-200 dark:border-gray-700 mt-2 mb-5"
 					loading="lazy">
 				<p id="delete-current-product-picture-on-save-hint"
-					class="form-text text-muted font-italic d-none pb-5">{{ $__t('The current picture will be deleted on save') }}</p>
+					class="text-sm text-gray-500 dark:text-gray-400 italic hidden pb-5">{{ $__t('The current picture will be deleted on save') }}</p>
 				@else
 				<p id="no-current-product-picture-hint"
-					class="form-text text-muted font-italic pb-5">{{ $__t('No picture available') }}</p>
+					class="text-sm text-gray-500 dark:text-gray-400 italic pb-5">{{ $__t('No picture available') }}</p>
 				@endif
 			</div>
 		</div>
