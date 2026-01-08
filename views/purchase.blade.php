@@ -13,26 +13,26 @@
 	Grocy.DefaultMinAmount = '{{ $DEFAULT_MIN_AMOUNT }}';
 </script>
 
-<div class="row">
-	<div class="col-12 col-md-6 col-xl-4 pb-3">
-		<div class="title-related-links">
-			<h2 class="title">@yield('title')</h2>
-			<button class="btn btn-outline-dark d-md-none mt-2 float-right order-1 order-md-3 hide-when-embedded"
+<div class="flex flex-wrap">
+	<div class="w-full md:w-1/2 xl:w-1/3 pb-3">
+		<div class="flex flex-wrap items-center gap-2">
+			<h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">@yield('title')</h2>
+			<button class="btn btn-secondary md:hidden mt-2 float-right order-1 md:order-3 hide-when-embedded"
 				type="button"
 				data-toggle="collapse"
 				data-target="#related-links">
 				<i class="fa-solid fa-ellipsis-v"></i>
 			</button>
-			<div class="related-links collapse d-md-flex order-2 width-xs-sm-100"
+			<div class="related-links collapse md:flex order-2 w-full md:w-auto"
 				id="related-links">
 				@if(!$embedded)
 				<button id="scan-mode-button"
-					class="btn @if(boolval($userSettings['scan_mode_purchase_enabled'])) btn-success @else btn-danger @endif m-1 mt-md-0 mb-md-0 float-right"
+					class="btn @if(boolval($userSettings['scan_mode_purchase_enabled'])) btn-success @else btn-danger @endif m-1 md:mt-0 md:mb-0 float-right"
 					data-toggle="tooltip"
 					title="{{ $__t('When enabled, after changing/scanning a product and if all fields could be automatically populated (by product and/or barcode defaults), the transaction is automatically submitted') }}">{{ $__t('Scan mode') }} <span id="scan-mode-status">@if(boolval($userSettings['scan_mode_purchase_enabled'])) {{ $__t('on') }} @else {{ $__t('off') }} @endif</span></button>
 				<input id="scan-mode"
 					type="checkbox"
-					class="d-none user-setting-control"
+					class="hidden user-setting-control"
 					data-setting-key="scan_mode_purchase_enabled"
 					@if(boolval($userSettings['scan_mode_purchase_enabled']))
 					checked
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 
-		<hr class="my-2">
+		<hr class="my-2 border-gray-200 dark:border-gray-700">
 
 		<form id="purchase-form"
 			novalidate>
@@ -59,7 +59,7 @@
 			@include('components.productamountpicker', array(
 			'value' => 1,
 			'additionalHtmlContextHelp' => '<div id="tare-weight-handling-info"
-				class="text-info font-italic d-none">' . $__t('Tare weight handling enabled - please weigh the whole container, the amount to be posted will be automatically calculcated') . '</div>'
+				class="text-blue-600 dark:text-blue-400 italic hidden">' . $__t('Tare weight handling enabled - please weigh the whole container, the amount to be posted will be automatically calculcated') . '</div>'
 			))
 
 			@if(boolval($userSettings['show_purchased_date_on_purchase']))
@@ -109,26 +109,26 @@
 			'additionalCssClasses' => 'locale-number-input locale-number-currency'
 			))
 
-			<div class="custom-control custom-radio custom-control-inline mt-n2 mb-3">
-				<input class="custom-control-input"
-					type="radio"
-					name="price-type"
-					id="price-type-unit-price"
-					value="unit-price"
-					checked
-					tabindex="-1">
-				<label class="custom-control-label"
-					for="price-type-unit-price">{{ $__t('Unit price') }}</label>
-			</div>
-			<div class="custom-control custom-radio custom-control-inline mt-n2 mb-3">
-				<input class="custom-control-input"
-					type="radio"
-					name="price-type"
-					id="price-type-total-price"
-					value="total-price"
-					tabindex="-1">
-				<label class="custom-control-label"
-					for="price-type-total-price">{{ $__t('Total price') }}</label>
+			<div class="flex items-center gap-4 -mt-2 mb-3">
+				<label class="inline-flex items-center gap-2 cursor-pointer">
+					<input class="radio"
+						type="radio"
+						name="price-type"
+						id="price-type-unit-price"
+						value="unit-price"
+						checked
+						tabindex="-1">
+					<span class="text-sm text-gray-700 dark:text-gray-300">{{ $__t('Unit price') }}</span>
+				</label>
+				<label class="inline-flex items-center gap-2 cursor-pointer">
+					<input class="radio"
+						type="radio"
+						name="price-type"
+						id="price-type-total-price"
+						value="total-price"
+						tabindex="-1">
+					<span class="text-sm text-gray-700 dark:text-gray-300">{{ $__t('Total price') }}</span>
+				</label>
 			</div>
 			@include('components.shoppinglocationpicker', array(
 			'label' => 'Store',
@@ -150,8 +150,8 @@
 
 			@if(GROCY_FEATURE_FLAG_LABEL_PRINTER)
 			<div class="form-group">
-				<label for="stock_label_type">{{ $__t('Stock entry label') }}</label>
-				<select class="custom-control custom-select"
+				<label class="form-label" for="stock_label_type">{{ $__t('Stock entry label') }}</label>
+				<select class="select"
 					id="stock_label_type"
 					name="stock_label_type">
 					<option value="0">{{ $__t('No label') }}</option>
@@ -159,15 +159,15 @@
 					<option value="2">{{ $__t('Label per unit') }}</option>
 				</select>
 				<div id="stock-entry-label-info"
-					class="form-text text-info"></div>
+					class="form-help text-blue-600 dark:text-blue-400"></div>
 			</div>
 			@endif
 
 			<div class="form-group">
-				<label for="note">{{ $__t('Note') }}</label>
-				<div class="input-group">
+				<label class="form-label" for="note">{{ $__t('Note') }}</label>
+				<div class="input-group flex">
 					<input type="text"
-						class="form-control"
+						class="input"
 						id="note"
 						name="note">
 				</div>
@@ -179,12 +179,12 @@
 			))
 
 			<button id="save-purchase-button"
-				class="btn btn-success d-block">{{ $__t('OK') }}</button>
+				class="btn btn-success block w-full">{{ $__t('OK') }}</button>
 
 		</form>
 	</div>
 
-	<div class="col-12 col-md-6 col-xl-4 hide-when-embedded">
+	<div class="w-full md:w-1/2 xl:w-1/3 md:pl-4 hide-when-embedded">
 		@include('components.productcard')
 	</div>
 </div>

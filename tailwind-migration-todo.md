@@ -121,11 +121,11 @@
 
 ## Phase 6: Page Migration - Priority 1 (Core Pages)
 
-- [ ] 6.1 Migrate stockoverview.blade.php
-- [ ] 6.2 Migrate purchase.blade.php
-- [ ] 6.3 Migrate consume.blade.php
-- [ ] 6.4 Migrate shoppinglist.blade.php
-- [ ] 6.5 Migrate transfer.blade.php
+- [x] 6.1 Migrate stockoverview.blade.php
+- [x] 6.2 Migrate purchase.blade.php
+- [x] 6.3 Migrate consume.blade.php
+- [x] 6.4 Migrate shoppinglist.blade.php
+- [x] 6.5 Migrate transfer.blade.php
 - [ ] 6.6 Migrate inventory.blade.php
 
 ---
@@ -283,6 +283,7 @@
 - **Session 2026-01-08 (Phase 3)**: Completed Layout & Navigation. Created Tailwind layout with Alpine.js-powered sidebar (collapsible on desktop, slide-out on mobile). Ported all navigation items with feature flags and permission classes. Header includes clock, view settings dropdown, user dropdown, and settings menu. Navigation styles moved to main CSS file. Build verified: CSS 30.35KB (gzip 6.33KB), JS 46.70KB (gzip 16.68KB).
 - **Session 2026-01-08 (Phase 4)**: Completed Alpine.js Components. Created modal.js with GrocyModal compatibility (bootbox shim), dropdown.js with keyboard navigation, tooltip.js with Tippy.js integration (auto-initializes on [data-tooltip] and [title] elements), toast.js with toastr compatibility layer. Added modal HTML template to layout with transitions and focus trapping. Build verified: CSS 34.54KB (gzip 6.91KB), JS 110.47KB (gzip 37.69KB).
 - **Session 2026-01-08 (Phase 5)**: Completed Third-Party Library Styling. Created vendor CSS files for DataTables (table headers, sorting icons, pagination, search, length selector, dark mode), Flatpickr (calendar popup, day cells, month navigation, time picker, dark mode), FullCalendar (toolbar buttons, day cells, events, list view, popovers, dark mode), and Summernote WYSIWYG editor (toolbar, editing area, dropdowns, modals, dark mode). Created flatpickr.js helper with date/time/datetime/range picker initialization, locale support, Tempus Dominus compatibility layer, and auto-initialization via data attributes. Build verified: CSS 70.39KB (gzip 12.01KB), JS 164.87KB (gzip 53.22KB).
+- **Session 2026-01-08 (Phase 6 - Core Pages)**: Migrated 5 core pages from Bootstrap to Tailwind CSS: stockoverview.blade.php, purchase.blade.php, consume.blade.php, shoppinglist.blade.php, transfer.blade.php. Converted Bootstrap grid (row/col-*) to Tailwind flex/width utilities, form controls to custom .input/.select classes, buttons to .btn-* classes, and utility classes (d-none to hidden, d-md-* to md:*, etc.). Added Alpine.js x-data dropdowns for inline menus. Build verified: CSS 74.08KB (gzip 12.72KB), JS 164.87KB (gzip 53.22KB).
 
 
 ---
@@ -296,8 +297,8 @@
 | 3. Layout & Navigation | 10 | 10 | 0 |
 | 4. Alpine.js Components | 8 | 8 | 0 |
 | 5. Third-Party Styling | 6 | 6 | 0 |
-| 6. Page Migration | 85 | 0 | 85 |
+| 6. Page Migration | 85 | 5 | 80 |
 | 7. Cleanup | 9 | 0 | 9 |
-| **TOTAL** | **140** | **46** | **94** |
+| **TOTAL** | **140** | **51** | **89** |
 
 Last Updated: 2026-01-08
